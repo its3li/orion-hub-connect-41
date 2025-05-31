@@ -1,5 +1,6 @@
 
 import React, { useState } from 'react';
+import { instagram, whatsapp } from 'lucide-react';
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -188,8 +189,8 @@ const Contact = () => {
                 </div>
 
                 <div className="flex items-center">
-                  <div className="w-12 h-12 bg-purple-600 rounded-full flex items-center justify-center mr-4">
-                    <span className="text-white">📱</span>
+                  <div className="w-12 h-12 bg-green-600 rounded-full flex items-center justify-center mr-4">
+                    <whatsapp className="w-6 h-6 text-white" />
                   </div>
                   <div>
                     <p className="text-gray-300">واتساب</p>
@@ -227,18 +228,24 @@ const Contact = () => {
             {/* Social Media */}
             <div className="glass-effect p-6 rounded-2xl">
               <h3 className="text-xl font-semibold text-white mb-4">تابعنا على</h3>
-              <div className="flex space-x-4">
-                <a href="#" className="w-12 h-12 bg-purple-600 rounded-full flex items-center justify-center hover:bg-purple-700 transition-colors">
-                  <span className="text-white text-xl">f</span>
+              <div className="flex space-x-4 space-x-reverse">
+                <a href="#" className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center hover:bg-blue-700 transition-colors">
+                  <span className="text-white text-lg">f</span>
                 </a>
-                <a href="#" className="w-12 h-12 bg-purple-600 rounded-full flex items-center justify-center hover:bg-purple-700 transition-colors">
-                  <span className="text-white text-xl">T</span>
+                <a href="#" className="w-12 h-12 bg-blue-400 rounded-full flex items-center justify-center hover:bg-blue-500 transition-colors">
+                  <span className="text-white text-lg">T</span>
                 </a>
-                <a href="#" className="w-12 h-12 bg-purple-600 rounded-full flex items-center justify-center hover:bg-purple-700 transition-colors">
-                  <span className="text-white text-xl">in</span>
+                <a href="#" className="w-12 h-12 bg-blue-700 rounded-full flex items-center justify-center hover:bg-blue-800 transition-colors">
+                  <span className="text-white text-sm">in</span>
                 </a>
-                <a href="#" className="w-12 h-12 bg-purple-600 rounded-full flex items-center justify-center hover:bg-purple-700 transition-colors">
-                  <span className="text-white text-xl">ig</span>
+                <a href="#" className="w-12 h-12 bg-gradient-to-br from-purple-600 to-pink-600 rounded-full flex items-center justify-center hover:from-purple-700 hover:to-pink-700 transition-all">
+                  <instagram className="w-6 h-6 text-white" />
+                </a>
+                <a href="#" className="w-12 h-12 bg-green-600 rounded-full flex items-center justify-center hover:bg-green-700 transition-colors">
+                  <whatsapp className="w-6 h-6 text-white" />
+                </a>
+                <a href="#" className="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center hover:bg-red-700 transition-colors">
+                  <span className="text-white text-lg">▶</span>
                 </a>
               </div>
             </div>
@@ -255,6 +262,9 @@ const Contact = () => {
                 </button>
                 <button className="w-full text-right p-3 bg-white/10 rounded-lg text-gray-300 hover:text-white hover:bg-white/20 transition-colors">
                   كيف أحصل على شهادة؟
+                </button>
+                <button className="w-full text-right p-3 bg-white/10 rounded-lg text-gray-300 hover:text-white hover:bg-white/20 transition-colors">
+                  هل يمكنني استرداد المال؟
                 </button>
               </div>
             </div>

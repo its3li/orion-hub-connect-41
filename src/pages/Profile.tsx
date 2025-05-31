@@ -1,27 +1,45 @@
-
-import React, { useState } from 'react';
-import { User, FileText, BookOpen, Award, TrendingUp, Calendar, MapPin, Link as LinkIcon, Mail, Phone, Edit3, Settings, Download, Share2 } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { User, FileText, BookOpen, Award, TrendingUp, Calendar, MapPin, Link as LinkIcon, Mail, Phone, Edit3, Settings, Download, Share2, LogOut } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const Profile = () => {
   const [profileImage, setProfileImage] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState('overview');
+  const [showLogoutDialog, setShowLogoutDialog] = useState(false);
   const [userData, setUserData] = useState({
-    firstName: 'أحمد',
-    lastName: 'محمد',
-    email: 'ahmed@example.com',
+    firstName: 'مستخدم',
+    lastName: 'جديد',
+    email: 'user@example.com',
     phone: '+123456789',
-    skills: 'برمجة، تصميم، تسويق رقمي',
-    experience: 'متقدم',
-    bio: 'مطور ويب متخصص في React و Node.js مع خبرة 5 سنوات في تطوير تطبيقات الويب الحديثة. أحب تعلم التقنيات الجديدة ومشاركة المعرفة مع الآخرين.',
+    skills: 'لم يتم تحديد المهارات بعد',
+    experience: 'مبتدئ',
+    bio: 'مرحباً بك في ORION! يمكنك تحديث معلوماتك الشخصية من هنا.',
     location: 'القاهرة، مصر',
-    website: 'www.ahmed-dev.com',
-    jobTitle: 'مطور ويب أول',
+    website: 'www.example.com',
+    jobTitle: 'مطور',
     company: 'شركة التقنيات المتقدمة',
     joinDate: 'يناير 2024',
-    birthDate: '15 مارس 1990',
+    birthDate: '1 يناير 1995',
     languages: 'العربية، الإنجليزية',
-    interests: 'البرمجة، القراءة، السفر، التصوير'
+    interests: 'البرمجة، التصميم، التعلم المستمر'
   });
+  
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Load user data from localStorage if available
+    const storedUserData = localStorage.getItem('userData');
+    if (storedUserData) {
+      const parsedData = JSON.parse(storedUserData);
+      setUserData(parsedData);
+    }
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem('userData');
+    localStorage.removeItem('isLoggedIn');
+    navigate('/');
+  };
 
   const completedCourses = [
     {
@@ -41,15 +59,6 @@ const Profile = () => {
       grade: 'A',
       certificate: true,
       progress: 100
-    },
-    {
-      id: 3,
-      title: 'التسويق الرقمي الشامل',
-      instructor: 'خالد حسن',
-      completionDate: '20 سبتمبر 2024',
-      grade: 'B+',
-      certificate: true,
-      progress: 100
     }
   ];
 
@@ -61,23 +70,13 @@ const Profile = () => {
       progress: 65,
       nextLesson: 'Machine Learning Basics',
       estimatedCompletion: '15 يناير 2025'
-    },
-    {
-      id: 5,
-      title: 'إدارة المشاريع الرقمية',
-      instructor: 'أمينة صالح',
-      progress: 30,
-      nextLesson: 'Agile Methodology',
-      estimatedCompletion: '28 فبراير 2025'
     }
   ];
 
   const achievements = [
-    { title: 'أول كورس مكتمل', icon: '🎓', date: '20 سبتمبر 2024' },
+    { title: 'عضو جديد', icon: '🎉', date: userData.joinDate },
     { title: 'متعلم نشط', icon: '⚡', date: '1 أكتوبر 2024' },
-    { title: 'مشارك في المجتمع', icon: '🤝', date: '15 أكتوبر 2024' },
-    { title: 'خبير React', icon: '⭐', date: '15 نوفمبر 2024' },
-    { title: 'معلم مساعد', icon: '👨‍🏫', date: '1 ديسمبر 2024' }
+    { title: 'مشارك في المجتمع', icon: '🤝', date: '15 أكتوبر 2024' }
   ];
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -92,15 +91,17 @@ const Profile = () => {
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    setUserData({
+    const updatedData = {
       ...userData,
       [e.target.name]: e.target.value
-    });
+    };
+    setUserData(updatedData);
+    localStorage.setItem('userData', JSON.stringify(updatedData));
   };
 
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Profile updated:', userData);
+    localStorage.setItem('userData', JSON.stringify(userData));
     alert('تم حفظ البيانات بنجاح!');
   };
 
@@ -114,12 +115,36 @@ const Profile = () => {
   return (
     <div className="min-h-screen pt-24 px-4 pb-12">
       <div className="container mx-auto max-w-6xl">
+        {/* Logout Confirmation Dialog */}
+        {showLogoutDialog && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+            <div className="glass-effect p-6 rounded-xl max-w-md w-full mx-4">
+              <h3 className="text-xl font-semibold text-white mb-4">تأكيد تسجيل الخروج</h3>
+              <p className="text-gray-300 mb-6">هل أنت متأكد من رغبتك في تسجيل الخروج؟</p>
+              <div className="flex gap-4">
+                <button
+                  onClick={handleLogout}
+                  className="flex-1 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+                >
+                  تسجيل الخروج
+                </button>
+                <button
+                  onClick={() => setShowLogoutDialog(false)}
+                  className="flex-1 py-2 glass-effect text-white rounded-lg hover:bg-white/20 transition-colors"
+                >
+                  إلغاء
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Profile Header */}
         <div className="glass-effect p-8 rounded-2xl mb-8">
           <div className="flex flex-col md:flex-row items-center gap-8">
             {/* Profile Image */}
             <div className="relative">
-              <div className="w-32 h-32 rounded-full overflow-hidden bg-purple-600 flex items-center justify-center">
+              <div className="w-32 h-32 rounded-full overflow-hidden bg-gradient-to-br from-purple-600 to-pink-600 flex items-center justify-center">
                 {profileImage ? (
                   <img 
                     src={profileImage} 
@@ -159,17 +184,18 @@ const Profile = () => {
                   <Calendar className="w-4 h-4 mr-2" />
                   <span>انضم في {userData.joinDate}</span>
                 </div>
-                <div className="flex items-center">
-                  <LinkIcon className="w-4 h-4 mr-2" />
-                  <a href={`https://${userData.website}`} className="text-purple-300 hover:text-purple-200">
-                    {userData.website}
-                  </a>
-                </div>
               </div>
             </div>
 
             {/* Action Buttons */}
             <div className="flex flex-col gap-2">
+              <button 
+                onClick={() => setShowLogoutDialog(true)}
+                className="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors flex items-center"
+              >
+                <LogOut className="w-4 h-4 mr-2" />
+                تسجيل الخروج
+              </button>
               <button className="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors flex items-center">
                 <Share2 className="w-4 h-4 mr-2" />
                 مشاركة الملف
@@ -184,22 +210,22 @@ const Profile = () => {
 
         {/* Quick Stats */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
-          <div className="glass-effect p-6 rounded-xl text-center">
+          <div className="glass-effect p-6 rounded-xl text-center hover:scale-105 transition-transform">
             <BookOpen className="w-8 h-8 text-purple-300 mx-auto mb-2" />
             <div className="text-2xl font-bold text-white">{completedCourses.length}</div>
             <div className="text-gray-300">كورس مكتمل</div>
           </div>
-          <div className="glass-effect p-6 rounded-xl text-center">
+          <div className="glass-effect p-6 rounded-xl text-center hover:scale-105 transition-transform">
             <TrendingUp className="w-8 h-8 text-purple-300 mx-auto mb-2" />
             <div className="text-2xl font-bold text-white">{ongoingCourses.length}</div>
             <div className="text-gray-300">كورس جاري</div>
           </div>
-          <div className="glass-effect p-6 rounded-xl text-center">
+          <div className="glass-effect p-6 rounded-xl text-center hover:scale-105 transition-transform">
             <Award className="w-8 h-8 text-purple-300 mx-auto mb-2" />
             <div className="text-2xl font-bold text-white">{achievements.length}</div>
             <div className="text-gray-300">إنجاز</div>
           </div>
-          <div className="glass-effect p-6 rounded-xl text-center">
+          <div className="glass-effect p-6 rounded-xl text-center hover:scale-105 transition-transform">
             <User className="w-8 h-8 text-purple-300 mx-auto mb-2" />
             <div className="text-2xl font-bold text-white">4.8</div>
             <div className="text-gray-300">تقييم عام</div>
@@ -285,18 +311,13 @@ const Profile = () => {
                   <div className="space-y-3">
                     <div className="flex items-center p-3 bg-white/5 rounded-lg">
                       <div className="w-2 h-2 bg-green-400 rounded-full mr-3"></div>
-                      <span className="text-gray-300">أكمل كورس "تطوير تطبيقات الويب باستخدام React"</span>
-                      <span className="text-purple-300 text-sm mr-auto">منذ يومين</span>
+                      <span className="text-gray-300">انضم إلى منصة ORION</span>
+                      <span className="text-purple-300 text-sm mr-auto">اليوم</span>
                     </div>
                     <div className="flex items-center p-3 bg-white/5 rounded-lg">
                       <div className="w-2 h-2 bg-blue-400 rounded-full mr-3"></div>
-                      <span className="text-gray-300">شارك في مناقشة "أفضل ممارسات React"</span>
-                      <span className="text-purple-300 text-sm mr-auto">منذ 3 أيام</span>
-                    </div>
-                    <div className="flex items-center p-3 bg-white/5 rounded-lg">
-                      <div className="w-2 h-2 bg-purple-400 rounded-full mr-3"></div>
-                      <span className="text-gray-300">حصل على شهادة "خبير React"</span>
-                      <span className="text-purple-300 text-sm mr-auto">منذ أسبوع</span>
+                      <span className="text-gray-300">أكمل إعداد الحساب</span>
+                      <span className="text-purple-300 text-sm mr-auto">اليوم</span>
                     </div>
                   </div>
                 </div>
@@ -309,70 +330,86 @@ const Profile = () => {
                 {/* Ongoing Courses */}
                 <div>
                   <h3 className="text-xl font-semibold text-white mb-4">الكورسات الجارية</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {ongoingCourses.map(course => (
-                      <div key={course.id} className="bg-white/5 p-6 rounded-xl">
-                        <h4 className="text-lg font-semibold text-white mb-2">{course.title}</h4>
-                        <p className="text-gray-300 text-sm mb-3">بواسطة {course.instructor}</p>
-                        
-                        <div className="mb-3">
-                          <div className="flex justify-between text-sm text-gray-300 mb-1">
-                            <span>التقدم</span>
-                            <span>{course.progress}%</span>
+                  {ongoingCourses.length > 0 ? (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      {ongoingCourses.map(course => (
+                        <div key={course.id} className="bg-white/5 p-6 rounded-xl">
+                          <h4 className="text-lg font-semibold text-white mb-2">{course.title}</h4>
+                          <p className="text-gray-300 text-sm mb-3">بواسطة {course.instructor}</p>
+                          
+                          <div className="mb-3">
+                            <div className="flex justify-between text-sm text-gray-300 mb-1">
+                              <span>التقدم</span>
+                              <span>{course.progress}%</span>
+                            </div>
+                            <div className="w-full bg-gray-700 rounded-full h-2">
+                              <div 
+                                className="bg-purple-600 h-2 rounded-full transition-all duration-300"
+                                style={{ width: `${course.progress}%` }}
+                              ></div>
+                            </div>
                           </div>
-                          <div className="w-full bg-gray-700 rounded-full h-2">
-                            <div 
-                              className="bg-purple-600 h-2 rounded-full transition-all duration-300"
-                              style={{ width: `${course.progress}%` }}
-                            ></div>
-                          </div>
-                        </div>
 
-                        <div className="text-sm text-gray-300">
-                          <p>الدرس التالي: {course.nextLesson}</p>
-                          <p>الإنجاز المتوقع: {course.estimatedCompletion}</p>
+                          <div className="text-sm text-gray-300">
+                            <p>الدرس التالي: {course.nextLesson}</p>
+                            <p>الإنجاز المتوقع: {course.estimatedCompletion}</p>
+                          </div>
                         </div>
-                      </div>
-                    ))}
-                  </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="text-center py-12">
+                      <BookOpen className="w-16 h-16 text-gray-500 mx-auto mb-4" />
+                      <p className="text-gray-400 text-lg">لا توجد كورسات جارية حالياً</p>
+                      <p className="text-gray-500">ابدأ رحلة التعلم واستكشف كورساتنا المتنوعة!</p>
+                    </div>
+                  )}
                 </div>
 
                 {/* Completed Courses */}
                 <div>
                   <h3 className="text-xl font-semibold text-white mb-4">الكورسات المكتملة</h3>
-                  <div className="space-y-4">
-                    {completedCourses.map(course => (
-                      <div key={course.id} className="bg-white/5 p-6 rounded-xl">
-                        <div className="flex items-center justify-between mb-2">
-                          <h4 className="text-lg font-semibold text-white">{course.title}</h4>
-                          {course.certificate && (
-                            <span className="px-3 py-1 bg-green-600/20 text-green-300 rounded-full text-sm">
-                              شهادة متاحة
-                            </span>
-                          )}
+                  {completedCourses.length > 0 ? (
+                    <div className="space-y-4">
+                      {completedCourses.map(course => (
+                        <div key={course.id} className="bg-white/5 p-6 rounded-xl">
+                          <div className="flex items-center justify-between mb-2">
+                            <h4 className="text-lg font-semibold text-white">{course.title}</h4>
+                            {course.certificate && (
+                              <span className="px-3 py-1 bg-green-600/20 text-green-300 rounded-full text-sm">
+                                شهادة متاحة
+                              </span>
+                            )}
+                          </div>
+                          
+                          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm text-gray-300">
+                            <div>
+                              <span className="text-purple-300">المدرب: </span>
+                              <span>{course.instructor}</span>
+                            </div>
+                            <div>
+                              <span className="text-purple-300">تاريخ الإكمال: </span>
+                              <span>{course.completionDate}</span>
+                            </div>
+                            <div>
+                              <span className="text-purple-300">الدرجة: </span>
+                              <span>{course.grade}</span>
+                            </div>
+                            <div>
+                              <span className="text-purple-300">التقدم: </span>
+                              <span>{course.progress}%</span>
+                            </div>
+                          </div>
                         </div>
-                        
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm text-gray-300">
-                          <div>
-                            <span className="text-purple-300">المدرب: </span>
-                            <span>{course.instructor}</span>
-                          </div>
-                          <div>
-                            <span className="text-purple-300">تاريخ الإكمال: </span>
-                            <span>{course.completionDate}</span>
-                          </div>
-                          <div>
-                            <span className="text-purple-300">الدرجة: </span>
-                            <span>{course.grade}</span>
-                          </div>
-                          <div>
-                            <span className="text-purple-300">التقدم: </span>
-                            <span>{course.progress}%</span>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="text-center py-12">
+                      <Award className="w-16 h-16 text-gray-500 mx-auto mb-4" />
+                      <p className="text-gray-400 text-lg">لم تكمل أي كورسات بعد</p>
+                      <p className="text-gray-500">ابدأ التعلم واحصل على شهاداتك الأولى!</p>
+                    </div>
+                  )}
                 </div>
               </div>
             )}
@@ -383,7 +420,7 @@ const Profile = () => {
                 <h3 className="text-xl font-semibold text-white mb-4">الإنجازات والأوسمة</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {achievements.map((achievement, index) => (
-                    <div key={index} className="bg-white/5 p-6 rounded-xl text-center">
+                    <div key={index} className="bg-white/5 p-6 rounded-xl text-center hover:scale-105 transition-transform">
                       <div className="text-4xl mb-3">{achievement.icon}</div>
                       <h4 className="text-lg font-semibold text-white mb-2">{achievement.title}</h4>
                       <p className="text-gray-300 text-sm">{achievement.date}</p>

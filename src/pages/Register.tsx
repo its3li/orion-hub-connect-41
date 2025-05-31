@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { User } from 'lucide-react';
@@ -29,7 +28,24 @@ const Register = () => {
       alert('كلمات المرور غير متطابقة');
       return;
     }
-    // Simulate registration - in real app, this would be API call
+    
+    // Store user data in localStorage
+    const userData = {
+      ...formData,
+      bio: `مرحباً، أنا ${formData.firstName} ${formData.lastName}. ${formData.skills ? `متخصص في ${formData.skills}.` : ''} أتطلع لتطوير مهاراتي وتحقيق أهدافي المهنية من خلال منصة ORION.`,
+      location: 'القاهرة، مصر',
+      website: 'www.example.com',
+      jobTitle: 'مطور',
+      company: 'شركة التقنيات المتقدمة',
+      joinDate: new Date().toLocaleDateString('ar-EG', { year: 'numeric', month: 'long' }),
+      birthDate: '1 يناير 1995',
+      languages: 'العربية، الإنجليزية',
+      interests: 'البرمجة، التصميم، التعلم المستمر'
+    };
+    
+    localStorage.setItem('userData', JSON.stringify(userData));
+    localStorage.setItem('isLoggedIn', 'true');
+    
     console.log('Registration data:', formData);
     // Redirect to profile page
     navigate('/profile');
