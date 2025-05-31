@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { instagram, whatsapp } from 'lucide-react';
+import { Instagram, MessageCircle } from 'lucide-react';
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -190,7 +190,7 @@ const Contact = () => {
 
                 <div className="flex items-center">
                   <div className="w-12 h-12 bg-green-600 rounded-full flex items-center justify-center mr-4">
-                    <whatsapp className="w-6 h-6 text-white" />
+                    <MessageCircle className="w-6 h-6 text-white" />
                   </div>
                   <div>
                     <p className="text-gray-300">واتساب</p>
@@ -239,10 +239,10 @@ const Contact = () => {
                   <span className="text-white text-sm">in</span>
                 </a>
                 <a href="#" className="w-12 h-12 bg-gradient-to-br from-purple-600 to-pink-600 rounded-full flex items-center justify-center hover:from-purple-700 hover:to-pink-700 transition-all">
-                  <instagram className="w-6 h-6 text-white" />
+                  <Instagram className="w-6 h-6 text-white" />
                 </a>
                 <a href="#" className="w-12 h-12 bg-green-600 rounded-full flex items-center justify-center hover:bg-green-700 transition-colors">
-                  <whatsapp className="w-6 h-6 text-white" />
+                  <MessageCircle className="w-6 h-6 text-white" />
                 </a>
                 <a href="#" className="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center hover:bg-red-700 transition-colors">
                   <span className="text-white text-lg">▶</span>
