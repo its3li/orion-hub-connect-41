@@ -14,6 +14,9 @@ import Jobs from "./pages/Jobs";
 import Apply from "./pages/Apply";
 import Contact from "./pages/Contact";
 import Courses from "./pages/Courses";
+import CourseDetail from "./components/CourseDetail";
+import Payment from "./pages/Payment";
+import CourseAccess from "./pages/CourseAccess";
 import Forum from "./pages/Forum";
 import NotFound from "./pages/NotFound";
 
@@ -36,8 +39,11 @@ const App = () => (
             <Route path="apply" element={<Apply />} />
             <Route path="contact" element={<Contact />} />
             <Route path="courses" element={<Courses />} />
+            <Route path="course/:id" element={<CourseDetail />} />
+            <Route path="payment/:courseId" element={<Payment />} />
             <Route path="forum" element={<Forum />} />
           </Route>
+          <Route path="/course-access/:courseId" element={<CourseAccess />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
