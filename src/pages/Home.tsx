@@ -1,7 +1,6 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowDown, Star, Users, Award, CheckCircle, TrendingUp, Globe, Play, BookOpen, Briefcase, Code, Palette, BarChart, MessageSquare, User, Building, Freelancer } from 'lucide-react';
+import { ArrowDown, Star, Users, Award, CheckCircle, TrendingUp, Globe, Play, BookOpen, Briefcase, Code, Palette, BarChart, MessageSquare, User, Building } from 'lucide-react';
 
 const Home = () => {
   const featuredCourses = [
