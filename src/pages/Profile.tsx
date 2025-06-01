@@ -111,11 +111,6 @@ const Profile = () => {
             {/* Avatar */}
             <div className="relative">
               <div className="w-32 h-32 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-white text-4xl font-bold">
-                {isEditing ? (
-                  <button className="absolute inset-0 bg-black/20 rounded-full flex items-center justify-center hover:bg-black/40 transition-colors">
-                    <Camera className="w-8 h-8" />
-                  </button>
-                ) : null}
                 {profileData.name[0]}
               </div>
               {isEditing && (
@@ -133,13 +128,15 @@ const Profile = () => {
                     type="text"
                     value={tempData.name}
                     onChange={(e) => setTempData(prev => ({ ...prev, name: e.target.value }))}
-                    className="text-3xl font-bold bg-transparent border-b-2 border-purple-400 text-white focus:outline-none"
+                    className="text-3xl font-bold bg-white/10 border-b-2 border-purple-400 text-white focus:outline-none focus:border-purple-300 px-2 py-1 rounded"
+                    placeholder="اسمك الكامل"
                   />
                   <textarea
                     value={tempData.bio}
                     onChange={(e) => setTempData(prev => ({ ...prev, bio: e.target.value }))}
-                    className="w-full p-3 bg-white/10 border border-white/20 rounded-lg text-gray-300 resize-none"
+                    className="w-full p-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-300 resize-none focus:outline-none focus:border-purple-400"
                     rows={3}
+                    placeholder="نبذة عنك..."
                   />
                 </div>
               ) : (
@@ -241,7 +238,8 @@ const Profile = () => {
                           type="email"
                           value={tempData.email}
                           onChange={(e) => setTempData(prev => ({ ...prev, email: e.target.value }))}
-                          className="flex-1 bg-white/10 border border-white/20 rounded-lg px-3 py-2 text-white"
+                          className="flex-1 bg-white/10 border border-white/20 rounded-lg px-3 py-2 text-white placeholder-gray-300 focus:outline-none focus:border-purple-400"
+                          placeholder="البريد الإلكتروني"
                         />
                       </div>
                       <div className="flex items-center">
@@ -250,7 +248,8 @@ const Profile = () => {
                           type="tel"
                           value={tempData.phone}
                           onChange={(e) => setTempData(prev => ({ ...prev, phone: e.target.value }))}
-                          className="flex-1 bg-white/10 border border-white/20 rounded-lg px-3 py-2 text-white"
+                          className="flex-1 bg-white/10 border border-white/20 rounded-lg px-3 py-2 text-white placeholder-gray-300 focus:outline-none focus:border-purple-400"
+                          placeholder="رقم الهاتف"
                         />
                       </div>
                       <div className="flex items-center">
@@ -259,7 +258,8 @@ const Profile = () => {
                           type="text"
                           value={tempData.address}
                           onChange={(e) => setTempData(prev => ({ ...prev, address: e.target.value }))}
-                          className="flex-1 bg-white/10 border border-white/20 rounded-lg px-3 py-2 text-white"
+                          className="flex-1 bg-white/10 border border-white/20 rounded-lg px-3 py-2 text-white placeholder-gray-300 focus:outline-none focus:border-purple-400"
+                          placeholder="العنوان"
                         />
                       </div>
                       <div className="flex items-center">
@@ -268,7 +268,7 @@ const Profile = () => {
                           type="date"
                           value={tempData.dateOfBirth}
                           onChange={(e) => setTempData(prev => ({ ...prev, dateOfBirth: e.target.value }))}
-                          className="flex-1 bg-white/10 border border-white/20 rounded-lg px-3 py-2 text-white"
+                          className="flex-1 bg-white/10 border border-white/20 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-purple-400"
                         />
                       </div>
                     </>
