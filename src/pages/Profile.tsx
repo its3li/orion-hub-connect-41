@@ -1,553 +1,427 @@
-import React, { useState, useEffect } from 'react';
-import { User, FileText, BookOpen, Award, TrendingUp, Calendar, MapPin, Link as LinkIcon, Mail, Phone, Edit3, Settings, Download, Share2, LogOut } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+
+import React, { useState } from 'react';
+import { User, Mail, Phone, MapPin, Calendar, Award, BookOpen, Target, TrendingUp, Edit, Save, X, Camera, Star, Clock, Download } from 'lucide-react';
 
 const Profile = () => {
-  const [profileImage, setProfileImage] = useState<string | null>(null);
+  const [isEditing, setIsEditing] = useState(false);
   const [activeTab, setActiveTab] = useState('overview');
-  const [showLogoutDialog, setShowLogoutDialog] = useState(false);
-  const [userData, setUserData] = useState({
-    firstName: 'مستخدم',
-    lastName: 'جديد',
-    email: 'user@example.com',
-    phone: '+123456789',
-    skills: 'لم يتم تحديد المهارات بعد',
-    experience: 'مبتدئ',
-    bio: 'مرحباً بك في ORION! يمكنك تحديث معلوماتك الشخصية من هنا.',
-    location: 'القاهرة، مصر',
-    website: 'www.example.com',
-    jobTitle: 'مطور',
-    company: 'شركة التقنيات المتقدمة',
-    joinDate: 'يناير 2024',
-    birthDate: '1 يناير 1995',
-    languages: 'العربية، الإنجليزية',
-    interests: 'البرمجة، التصميم، التعلم المستمر'
+  const [profileData, setProfileData] = useState({
+    name: localStorage.getItem('userName') || 'أحمد محمد',
+    email: localStorage.getItem('userEmail') || 'ahmed@example.com',
+    phone: localStorage.getItem('userPhone') || '+201234567890',
+    address: localStorage.getItem('userAddress') || 'القاهرة، مصر',
+    dateOfBirth: localStorage.getItem('userDateOfBirth') || '1990-01-01',
+    bio: 'مطور ويب متخصص في React و Node.js، أحب تعلم التقنيات الجديدة ومشاركة المعرفة',
+    interests: ['برمجة', 'تصميم', 'ذكاء اصطناعي'],
+    experience: 'متوسط',
+    goals: 'أريد أن أصبح مطور full-stack محترف'
   });
-  
-  const navigate = useNavigate();
 
-  useEffect(() => {
-    // Load user data from localStorage if available
-    const storedUserData = localStorage.getItem('userData');
-    if (storedUserData) {
-      const parsedData = JSON.parse(storedUserData);
-      setUserData(parsedData);
-    }
-  }, []);
+  const [tempData, setTempData] = useState(profileData);
 
-  const handleLogout = () => {
-    localStorage.removeItem('userData');
-    localStorage.removeItem('isLoggedIn');
-    navigate('/');
+  const handleSave = () => {
+    setProfileData(tempData);
+    // Save to localStorage
+    Object.entries(tempData).forEach(([key, value]) => {
+      if (typeof value === 'string') {
+        localStorage.setItem(`user${key.charAt(0).toUpperCase() + key.slice(1)}`, value);
+      }
+    });
+    setIsEditing(false);
   };
 
-  const completedCourses = [
+  const handleCancel = () => {
+    setTempData(profileData);
+    setIsEditing(false);
+  };
+
+  const enrolledCourses = [
     {
       id: 1,
       title: 'تطوير تطبيقات الويب باستخدام React',
+      progress: 75,
+      totalLessons: 24,
+      completedLessons: 18,
       instructor: 'أحمد محمد',
-      completionDate: '15 نوفمبر 2024',
-      grade: 'A+',
-      certificate: true,
-      progress: 100
+      image: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=300',
+      lastAccessed: 'منذ يومين',
+      rating: 4.8
     },
     {
       id: 2,
       title: 'تصميم UI/UX احترافي',
+      progress: 45,
+      totalLessons: 18,
+      completedLessons: 8,
       instructor: 'مريم علي',
-      completionDate: '5 أكتوبر 2024',
-      grade: 'A',
-      certificate: true,
-      progress: 100
-    }
-  ];
-
-  const ongoingCourses = [
-    {
-      id: 4,
-      title: 'تحليل البيانات باستخدام Python',
-      instructor: 'دكتور محمد إبراهيم',
-      progress: 65,
-      nextLesson: 'Machine Learning Basics',
-      estimatedCompletion: '15 يناير 2025'
+      image: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=300',
+      lastAccessed: 'منذ أسبوع',
+      rating: 4.7
     }
   ];
 
   const achievements = [
-    { title: 'عضو جديد', icon: '🎉', date: userData.joinDate },
-    { title: 'متعلم نشط', icon: '⚡', date: '1 أكتوبر 2024' },
-    { title: 'مشارك في المجتمع', icon: '🤝', date: '15 أكتوبر 2024' }
+    { id: 1, title: 'أول كورس مكتمل', icon: '🎓', date: '2024-01-15', description: 'أكمل أول كورس بنجاح' },
+    { id: 2, title: 'نشط في المجتمع', icon: '💬', date: '2024-02-01', description: '10 مشاركات في المنتدى' },
+    { id: 3, title: 'متعلم متفاني', icon: '📚', date: '2024-02-10', description: '30 ساعة تعلم متواصلة' },
+    { id: 4, title: 'مقيم نشط', icon: '⭐', date: '2024-02-15', description: 'قيم 5 كورسات' }
   ];
 
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        setProfileImage(event.target?.result as string);
-      };
-      reader.readAsDataURL(file);
+  const certificates = [
+    {
+      id: 1,
+      title: 'شهادة إتمام كورس React',
+      course: 'تطوير تطبيقات الويب باستخدام React',
+      date: '2024-01-15',
+      instructor: 'أحمد محمد',
+      grade: 'ممتاز'
+    },
+    {
+      id: 2,
+      title: 'شهادة تصميم UI/UX',
+      course: 'تصميم UI/UX احترافي',
+      date: '2024-02-20',
+      instructor: 'مريم علي',
+      grade: 'جيد جداً'
     }
-  };
+  ];
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    const updatedData = {
-      ...userData,
-      [e.target.name]: e.target.value
-    };
-    setUserData(updatedData);
-    localStorage.setItem('userData', JSON.stringify(updatedData));
-  };
-
-  const handleSave = (e: React.FormEvent) => {
-    e.preventDefault();
-    localStorage.setItem('userData', JSON.stringify(userData));
-    alert('تم حفظ البيانات بنجاح!');
+  const learningStats = {
+    totalHours: 120,
+    coursesCompleted: 3,
+    coursesInProgress: 2,
+    certificatesEarned: 2,
+    forumPosts: 15,
+    averageGrade: 'ممتاز'
   };
 
   const tabs = [
-    { id: 'overview', label: 'نظرة عامة', icon: <User className="w-4 h-4" /> },
-    { id: 'courses', label: 'كورساتي', icon: <BookOpen className="w-4 h-4" /> },
-    { id: 'achievements', label: 'الإنجازات', icon: <Award className="w-4 h-4" /> },
-    { id: 'settings', label: 'الإعدادات', icon: <Settings className="w-4 h-4" /> }
+    { id: 'overview', label: 'نظرة عامة', icon: <User className="w-5 h-5" /> },
+    { id: 'courses', label: 'كورساتي', icon: <BookOpen className="w-5 h-5" /> },
+    { id: 'achievements', label: 'الإنجازات', icon: <Award className="w-5 h-5" /> },
+    { id: 'certificates', label: 'الشهادات', icon: <Star className="w-5 h-5" /> }
   ];
 
   return (
     <div className="min-h-screen pt-24 px-4 pb-12">
       <div className="container mx-auto max-w-6xl">
-        {/* Logout Confirmation Dialog */}
-        {showLogoutDialog && (
-          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-            <div className="glass-effect p-6 rounded-xl max-w-md w-full mx-4">
-              <h3 className="text-xl font-semibold text-white mb-4">تأكيد تسجيل الخروج</h3>
-              <p className="text-gray-300 mb-6">هل أنت متأكد من رغبتك في تسجيل الخروج؟</p>
-              <div className="flex gap-4">
-                <button
-                  onClick={handleLogout}
-                  className="flex-1 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
-                >
-                  تسجيل الخروج
-                </button>
-                <button
-                  onClick={() => setShowLogoutDialog(false)}
-                  className="flex-1 py-2 glass-effect text-white rounded-lg hover:bg-white/20 transition-colors"
-                >
-                  إلغاء
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
-
         {/* Profile Header */}
         <div className="glass-effect p-8 rounded-2xl mb-8">
-          <div className="flex flex-col md:flex-row items-center gap-8">
-            {/* Profile Image */}
+          <div className="flex flex-col md:flex-row items-start gap-8">
+            {/* Avatar */}
             <div className="relative">
-              <div className="w-32 h-32 rounded-full overflow-hidden bg-gradient-to-br from-purple-600 to-pink-600 flex items-center justify-center">
-                {profileImage ? (
-                  <img 
-                    src={profileImage} 
-                    alt="Profile" 
-                    className="w-full h-full object-cover"
-                  />
-                ) : (
-                  <User className="w-16 h-16 text-white" />
-                )}
+              <div className="w-32 h-32 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-white text-4xl font-bold">
+                {isEditing ? (
+                  <button className="absolute inset-0 bg-black/20 rounded-full flex items-center justify-center hover:bg-black/40 transition-colors">
+                    <Camera className="w-8 h-8" />
+                  </button>
+                ) : null}
+                {profileData.name[0]}
               </div>
-              <label htmlFor="profile-image" className="absolute bottom-2 right-2 bg-purple-600 p-2 rounded-full cursor-pointer hover:bg-purple-700 transition-colors">
-                <Edit3 className="w-4 h-4 text-white" />
-              </label>
-              <input
-                type="file"
-                id="profile-image"
-                accept="image/*"
-                onChange={handleImageUpload}
-                className="hidden"
-              />
+              {isEditing && (
+                <button className="absolute -bottom-2 -right-2 w-10 h-10 bg-purple-600 rounded-full flex items-center justify-center hover:bg-purple-700 transition-colors">
+                  <Camera className="w-5 h-5 text-white" />
+                </button>
+              )}
             </div>
 
             {/* Profile Info */}
-            <div className="flex-1 text-center md:text-right">
-              <h1 className="text-3xl font-bold text-white mb-2">
-                {userData.firstName} {userData.lastName}
-              </h1>
-              <p className="text-xl text-purple-300 mb-4">{userData.jobTitle}</p>
-              <p className="text-gray-300 mb-4 max-w-2xl">{userData.bio}</p>
-              
-              <div className="flex flex-wrap justify-center md:justify-start gap-4 text-sm text-gray-300">
-                <div className="flex items-center">
-                  <MapPin className="w-4 h-4 mr-2" />
-                  <span>{userData.location}</span>
+            <div className="flex-1">
+              {isEditing ? (
+                <div className="space-y-4">
+                  <input
+                    type="text"
+                    value={tempData.name}
+                    onChange={(e) => setTempData(prev => ({ ...prev, name: e.target.value }))}
+                    className="text-3xl font-bold bg-transparent border-b-2 border-purple-400 text-white focus:outline-none"
+                  />
+                  <textarea
+                    value={tempData.bio}
+                    onChange={(e) => setTempData(prev => ({ ...prev, bio: e.target.value }))}
+                    className="w-full p-3 bg-white/10 border border-white/20 rounded-lg text-gray-300 resize-none"
+                    rows={3}
+                  />
                 </div>
-                <div className="flex items-center">
-                  <Calendar className="w-4 h-4 mr-2" />
-                  <span>انضم في {userData.joinDate}</span>
+              ) : (
+                <div>
+                  <h1 className="text-3xl font-bold text-white mb-2">{profileData.name}</h1>
+                  <p className="text-gray-300 mb-4">{profileData.bio}</p>
+                </div>
+              )}
+
+              {/* Quick Stats */}
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-purple-300">{learningStats.totalHours}</div>
+                  <div className="text-gray-400 text-sm">ساعة تعلم</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-purple-300">{learningStats.coursesCompleted}</div>
+                  <div className="text-gray-400 text-sm">كورس مكتمل</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-purple-300">{learningStats.certificatesEarned}</div>
+                  <div className="text-gray-400 text-sm">شهادة</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-purple-300">{learningStats.forumPosts}</div>
+                  <div className="text-gray-400 text-sm">مشاركة</div>
                 </div>
               </div>
-            </div>
 
-            {/* Action Buttons */}
-            <div className="flex flex-col gap-2">
-              <button 
-                onClick={() => setShowLogoutDialog(true)}
-                className="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors flex items-center"
-              >
-                <LogOut className="w-4 h-4 mr-2" />
-                تسجيل الخروج
-              </button>
-              <button className="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors flex items-center">
-                <Share2 className="w-4 h-4 mr-2" />
-                مشاركة الملف
-              </button>
-              <button className="px-6 py-2 glass-effect text-white rounded-lg hover:bg-white/20 transition-colors flex items-center">
-                <Download className="w-4 h-4 mr-2" />
-                تحميل السيرة
-              </button>
+              {/* Action Buttons */}
+              <div className="flex items-center gap-4">
+                {isEditing ? (
+                  <>
+                    <button
+                      onClick={handleSave}
+                      className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center gap-2"
+                    >
+                      <Save className="w-5 h-5" />
+                      حفظ التغييرات
+                    </button>
+                    <button
+                      onClick={handleCancel}
+                      className="px-6 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors flex items-center gap-2"
+                    >
+                      <X className="w-5 h-5" />
+                      إلغاء
+                    </button>
+                  </>
+                ) : (
+                  <button
+                    onClick={() => setIsEditing(true)}
+                    className="px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors flex items-center gap-2"
+                  >
+                    <Edit className="w-5 h-5" />
+                    تعديل البيانات
+                  </button>
+                )}
+              </div>
             </div>
-          </div>
-        </div>
-
-        {/* Quick Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
-          <div className="glass-effect p-6 rounded-xl text-center hover:scale-105 transition-transform">
-            <BookOpen className="w-8 h-8 text-purple-300 mx-auto mb-2" />
-            <div className="text-2xl font-bold text-white">{completedCourses.length}</div>
-            <div className="text-gray-300">كورس مكتمل</div>
-          </div>
-          <div className="glass-effect p-6 rounded-xl text-center hover:scale-105 transition-transform">
-            <TrendingUp className="w-8 h-8 text-purple-300 mx-auto mb-2" />
-            <div className="text-2xl font-bold text-white">{ongoingCourses.length}</div>
-            <div className="text-gray-300">كورس جاري</div>
-          </div>
-          <div className="glass-effect p-6 rounded-xl text-center hover:scale-105 transition-transform">
-            <Award className="w-8 h-8 text-purple-300 mx-auto mb-2" />
-            <div className="text-2xl font-bold text-white">{achievements.length}</div>
-            <div className="text-gray-300">إنجاز</div>
-          </div>
-          <div className="glass-effect p-6 rounded-xl text-center hover:scale-105 transition-transform">
-            <User className="w-8 h-8 text-purple-300 mx-auto mb-2" />
-            <div className="text-2xl font-bold text-white">4.8</div>
-            <div className="text-gray-300">تقييم عام</div>
           </div>
         </div>
 
         {/* Tabs */}
-        <div className="glass-effect rounded-2xl overflow-hidden">
-          <div className="border-b border-white/20">
-            <div className="flex overflow-x-auto">
-              {tabs.map(tab => (
-                <button
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id)}
-                  className={`flex items-center gap-2 px-6 py-4 font-medium transition-colors whitespace-nowrap ${
-                    activeTab === tab.id
-                      ? 'text-purple-300 border-b-2 border-purple-300 bg-white/5'
-                      : 'text-gray-300 hover:text-white hover:bg-white/5'
-                  }`}
-                >
-                  {tab.icon}
-                  {tab.label}
-                </button>
+        <div className="glass-effect p-2 rounded-2xl mb-8">
+          <div className="flex space-x-2 overflow-x-auto">
+            {tabs.map(tab => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-colors whitespace-nowrap ${
+                  activeTab === tab.id
+                    ? 'bg-purple-600 text-white'
+                    : 'text-gray-300 hover:bg-white/10'
+                }`}
+              >
+                {tab.icon}
+                {tab.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Tab Content */}
+        <div className="space-y-8">
+          {activeTab === 'overview' && (
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              {/* Personal Information */}
+              <div className="glass-effect p-6 rounded-2xl">
+                <h2 className="text-xl font-semibold text-white mb-6 flex items-center">
+                  <User className="w-6 h-6 mr-2" />
+                  المعلومات الشخصية
+                </h2>
+                <div className="space-y-4">
+                  {isEditing ? (
+                    <>
+                      <div className="flex items-center">
+                        <Mail className="w-5 h-5 text-purple-300 mr-3" />
+                        <input
+                          type="email"
+                          value={tempData.email}
+                          onChange={(e) => setTempData(prev => ({ ...prev, email: e.target.value }))}
+                          className="flex-1 bg-white/10 border border-white/20 rounded-lg px-3 py-2 text-white"
+                        />
+                      </div>
+                      <div className="flex items-center">
+                        <Phone className="w-5 h-5 text-purple-300 mr-3" />
+                        <input
+                          type="tel"
+                          value={tempData.phone}
+                          onChange={(e) => setTempData(prev => ({ ...prev, phone: e.target.value }))}
+                          className="flex-1 bg-white/10 border border-white/20 rounded-lg px-3 py-2 text-white"
+                        />
+                      </div>
+                      <div className="flex items-center">
+                        <MapPin className="w-5 h-5 text-purple-300 mr-3" />
+                        <input
+                          type="text"
+                          value={tempData.address}
+                          onChange={(e) => setTempData(prev => ({ ...prev, address: e.target.value }))}
+                          className="flex-1 bg-white/10 border border-white/20 rounded-lg px-3 py-2 text-white"
+                        />
+                      </div>
+                      <div className="flex items-center">
+                        <Calendar className="w-5 h-5 text-purple-300 mr-3" />
+                        <input
+                          type="date"
+                          value={tempData.dateOfBirth}
+                          onChange={(e) => setTempData(prev => ({ ...prev, dateOfBirth: e.target.value }))}
+                          className="flex-1 bg-white/10 border border-white/20 rounded-lg px-3 py-2 text-white"
+                        />
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div className="flex items-center text-gray-300">
+                        <Mail className="w-5 h-5 text-purple-300 mr-3" />
+                        <span>{profileData.email}</span>
+                      </div>
+                      <div className="flex items-center text-gray-300">
+                        <Phone className="w-5 h-5 text-purple-300 mr-3" />
+                        <span>{profileData.phone}</span>
+                      </div>
+                      <div className="flex items-center text-gray-300">
+                        <MapPin className="w-5 h-5 text-purple-300 mr-3" />
+                        <span>{profileData.address}</span>
+                      </div>
+                      <div className="flex items-center text-gray-300">
+                        <Calendar className="w-5 h-5 text-purple-300 mr-3" />
+                        <span>{new Date(profileData.dateOfBirth).toLocaleDateString('ar-EG')}</span>
+                      </div>
+                    </>
+                  )}
+                </div>
+              </div>
+
+              {/* Learning Progress */}
+              <div className="glass-effect p-6 rounded-2xl">
+                <h2 className="text-xl font-semibold text-white mb-6 flex items-center">
+                  <TrendingUp className="w-6 h-6 mr-2" />
+                  التقدم التعليمي
+                </h2>
+                <div className="space-y-6">
+                  <div>
+                    <div className="flex justify-between mb-2">
+                      <span className="text-gray-300">إجمالي الساعات</span>
+                      <span className="text-purple-300 font-semibold">{learningStats.totalHours} ساعة</span>
+                    </div>
+                    <div className="w-full bg-gray-700 rounded-full h-2">
+                      <div className="bg-gradient-to-r from-purple-500 to-pink-500 h-2 rounded-full" style={{ width: '70%' }}></div>
+                    </div>
+                  </div>
+                  <div>
+                    <div className="flex justify-between mb-2">
+                      <span className="text-gray-300">الكورسات المكتملة</span>
+                      <span className="text-purple-300 font-semibold">{learningStats.coursesCompleted}/5</span>
+                    </div>
+                    <div className="w-full bg-gray-700 rounded-full h-2">
+                      <div className="bg-gradient-to-r from-blue-500 to-cyan-500 h-2 rounded-full" style={{ width: '60%' }}></div>
+                    </div>
+                  </div>
+                  <div>
+                    <div className="flex justify-between mb-2">
+                      <span className="text-gray-300">متوسط الدرجات</span>
+                      <span className="text-purple-300 font-semibold">{learningStats.averageGrade}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {activeTab === 'courses' && (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {enrolledCourses.map(course => (
+                <div key={course.id} className="glass-effect p-6 rounded-2xl hover-glow">
+                  <div className="flex items-start gap-4 mb-4">
+                    <img 
+                      src={course.image} 
+                      alt={course.title}
+                      className="w-16 h-16 rounded-lg object-cover"
+                    />
+                    <div className="flex-1">
+                      <h3 className="text-lg font-semibold text-white mb-1">{course.title}</h3>
+                      <p className="text-gray-300 text-sm">{course.instructor}</p>
+                      <div className="flex items-center mt-2">
+                        <Star className="w-4 h-4 text-yellow-400 mr-1" />
+                        <span className="text-gray-300 text-sm">{course.rating}</span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="mb-4">
+                    <div className="flex justify-between text-sm mb-2">
+                      <span className="text-gray-300">التقدم</span>
+                      <span className="text-purple-300">{course.completedLessons}/{course.totalLessons} درس</span>
+                    </div>
+                    <div className="w-full bg-gray-700 rounded-full h-2">
+                      <div 
+                        className="bg-gradient-to-r from-purple-500 to-pink-500 h-2 rounded-full"
+                        style={{ width: `${course.progress}%` }}
+                      ></div>
+                    </div>
+                    <p className="text-purple-300 text-sm mt-1">{course.progress}% مكتمل</p>
+                  </div>
+
+                  <div className="flex items-center justify-between text-sm text-gray-400 mb-4">
+                    <div className="flex items-center">
+                      <Clock className="w-4 h-4 mr-1" />
+                      <span>آخر وصول: {course.lastAccessed}</span>
+                    </div>
+                  </div>
+
+                  <button className="w-full bg-purple-600 text-white py-2 rounded-lg hover:bg-purple-700 transition-colors">
+                    متابعة التعلم
+                  </button>
+                </div>
               ))}
             </div>
-          </div>
+          )}
 
-          <div className="p-8">
-            {/* Overview Tab */}
-            {activeTab === 'overview' && (
-              <div className="space-y-8">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  {/* Personal Info */}
-                  <div>
-                    <h3 className="text-xl font-semibold text-white mb-4">المعلومات الشخصية</h3>
-                    <div className="space-y-3 text-gray-300">
-                      <div className="flex items-center">
-                        <Mail className="w-4 h-4 mr-2 text-purple-300" />
-                        <span>{userData.email}</span>
-                      </div>
-                      <div className="flex items-center">
-                        <Phone className="w-4 h-4 mr-2 text-purple-300" />
-                        <span>{userData.phone}</span>
-                      </div>
-                      <div className="flex items-center">
-                        <Calendar className="w-4 h-4 mr-2 text-purple-300" />
-                        <span>تاريخ الميلاد: {userData.birthDate}</span>
-                      </div>
-                      <div className="flex items-center">
-                        <span className="w-4 h-4 mr-2 text-purple-300">🌐</span>
-                        <span>اللغات: {userData.languages}</span>
-                      </div>
+          {activeTab === 'achievements' && (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {achievements.map(achievement => (
+                <div key={achievement.id} className="glass-effect p-6 rounded-2xl hover-glow text-center">
+                  <div className="text-4xl mb-4">{achievement.icon}</div>
+                  <h3 className="text-lg font-semibold text-white mb-2">{achievement.title}</h3>
+                  <p className="text-gray-300 text-sm mb-3">{achievement.description}</p>
+                  <p className="text-purple-300 text-xs">{new Date(achievement.date).toLocaleDateString('ar-EG')}</p>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {activeTab === 'certificates' && (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {certificates.map(certificate => (
+                <div key={certificate.id} className="glass-effect p-6 rounded-2xl hover-glow">
+                  <div className="flex items-start justify-between mb-4">
+                    <div>
+                      <h3 className="text-lg font-semibold text-white mb-1">{certificate.title}</h3>
+                      <p className="text-gray-300 text-sm">{certificate.course}</p>
+                      <p className="text-purple-300 text-sm">المدرب: {certificate.instructor}</p>
+                    </div>
+                    <div className="text-center">
+                      <Star className="w-8 h-8 text-yellow-400 mx-auto mb-1" />
+                      <p className="text-yellow-300 text-sm">{certificate.grade}</p>
                     </div>
                   </div>
-
-                  {/* Professional Info */}
-                  <div>
-                    <h3 className="text-xl font-semibold text-white mb-4">المعلومات المهنية</h3>
-                    <div className="space-y-3 text-gray-300">
-                      <div>
-                        <span className="text-purple-300">الشركة: </span>
-                        <span>{userData.company}</span>
-                      </div>
-                      <div>
-                        <span className="text-purple-300">مستوى الخبرة: </span>
-                        <span>{userData.experience}</span>
-                      </div>
-                      <div>
-                        <span className="text-purple-300">المهارات: </span>
-                        <span>{userData.skills}</span>
-                      </div>
-                      <div>
-                        <span className="text-purple-300">الاهتمامات: </span>
-                        <span>{userData.interests}</span>
-                      </div>
-                    </div>
+                  
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-400 text-sm">
+                      {new Date(certificate.date).toLocaleDateString('ar-EG')}
+                    </span>
+                    <button className="flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors">
+                      <Download className="w-4 h-4" />
+                      تحميل
+                    </button>
                   </div>
                 </div>
-
-                {/* Recent Activity */}
-                <div>
-                  <h3 className="text-xl font-semibold text-white mb-4">النشاط الأخير</h3>
-                  <div className="space-y-3">
-                    <div className="flex items-center p-3 bg-white/5 rounded-lg">
-                      <div className="w-2 h-2 bg-green-400 rounded-full mr-3"></div>
-                      <span className="text-gray-300">انضم إلى منصة ORION</span>
-                      <span className="text-purple-300 text-sm mr-auto">اليوم</span>
-                    </div>
-                    <div className="flex items-center p-3 bg-white/5 rounded-lg">
-                      <div className="w-2 h-2 bg-blue-400 rounded-full mr-3"></div>
-                      <span className="text-gray-300">أكمل إعداد الحساب</span>
-                      <span className="text-purple-300 text-sm mr-auto">اليوم</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* Courses Tab */}
-            {activeTab === 'courses' && (
-              <div className="space-y-8">
-                {/* Ongoing Courses */}
-                <div>
-                  <h3 className="text-xl font-semibold text-white mb-4">الكورسات الجارية</h3>
-                  {ongoingCourses.length > 0 ? (
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      {ongoingCourses.map(course => (
-                        <div key={course.id} className="bg-white/5 p-6 rounded-xl">
-                          <h4 className="text-lg font-semibold text-white mb-2">{course.title}</h4>
-                          <p className="text-gray-300 text-sm mb-3">بواسطة {course.instructor}</p>
-                          
-                          <div className="mb-3">
-                            <div className="flex justify-between text-sm text-gray-300 mb-1">
-                              <span>التقدم</span>
-                              <span>{course.progress}%</span>
-                            </div>
-                            <div className="w-full bg-gray-700 rounded-full h-2">
-                              <div 
-                                className="bg-purple-600 h-2 rounded-full transition-all duration-300"
-                                style={{ width: `${course.progress}%` }}
-                              ></div>
-                            </div>
-                          </div>
-
-                          <div className="text-sm text-gray-300">
-                            <p>الدرس التالي: {course.nextLesson}</p>
-                            <p>الإنجاز المتوقع: {course.estimatedCompletion}</p>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  ) : (
-                    <div className="text-center py-12">
-                      <BookOpen className="w-16 h-16 text-gray-500 mx-auto mb-4" />
-                      <p className="text-gray-400 text-lg">لا توجد كورسات جارية حالياً</p>
-                      <p className="text-gray-500">ابدأ رحلة التعلم واستكشف كورساتنا المتنوعة!</p>
-                    </div>
-                  )}
-                </div>
-
-                {/* Completed Courses */}
-                <div>
-                  <h3 className="text-xl font-semibold text-white mb-4">الكورسات المكتملة</h3>
-                  {completedCourses.length > 0 ? (
-                    <div className="space-y-4">
-                      {completedCourses.map(course => (
-                        <div key={course.id} className="bg-white/5 p-6 rounded-xl">
-                          <div className="flex items-center justify-between mb-2">
-                            <h4 className="text-lg font-semibold text-white">{course.title}</h4>
-                            {course.certificate && (
-                              <span className="px-3 py-1 bg-green-600/20 text-green-300 rounded-full text-sm">
-                                شهادة متاحة
-                              </span>
-                            )}
-                          </div>
-                          
-                          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm text-gray-300">
-                            <div>
-                              <span className="text-purple-300">المدرب: </span>
-                              <span>{course.instructor}</span>
-                            </div>
-                            <div>
-                              <span className="text-purple-300">تاريخ الإكمال: </span>
-                              <span>{course.completionDate}</span>
-                            </div>
-                            <div>
-                              <span className="text-purple-300">الدرجة: </span>
-                              <span>{course.grade}</span>
-                            </div>
-                            <div>
-                              <span className="text-purple-300">التقدم: </span>
-                              <span>{course.progress}%</span>
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  ) : (
-                    <div className="text-center py-12">
-                      <Award className="w-16 h-16 text-gray-500 mx-auto mb-4" />
-                      <p className="text-gray-400 text-lg">لم تكمل أي كورسات بعد</p>
-                      <p className="text-gray-500">ابدأ التعلم واحصل على شهاداتك الأولى!</p>
-                    </div>
-                  )}
-                </div>
-              </div>
-            )}
-
-            {/* Achievements Tab */}
-            {activeTab === 'achievements' && (
-              <div>
-                <h3 className="text-xl font-semibold text-white mb-4">الإنجازات والأوسمة</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {achievements.map((achievement, index) => (
-                    <div key={index} className="bg-white/5 p-6 rounded-xl text-center hover:scale-105 transition-transform">
-                      <div className="text-4xl mb-3">{achievement.icon}</div>
-                      <h4 className="text-lg font-semibold text-white mb-2">{achievement.title}</h4>
-                      <p className="text-gray-300 text-sm">{achievement.date}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Settings Tab */}
-            {activeTab === 'settings' && (
-              <form onSubmit={handleSave} className="space-y-6">
-                <h3 className="text-xl font-semibold text-white mb-4">إعدادات الحساب</h3>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <label htmlFor="firstName" className="block text-white mb-2">
-                      الاسم الأول
-                    </label>
-                    <input
-                      type="text"
-                      id="firstName"
-                      name="firstName"
-                      value={userData.firstName}
-                      onChange={handleInputChange}
-                      className="w-full p-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-purple-400 transition-colors"
-                    />
-                  </div>
-
-                  <div>
-                    <label htmlFor="lastName" className="block text-white mb-2">
-                      اسم العائلة
-                    </label>
-                    <input
-                      type="text"
-                      id="lastName"
-                      name="lastName"
-                      value={userData.lastName}
-                      onChange={handleInputChange}
-                      className="w-full p-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-purple-400 transition-colors"
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <label htmlFor="email" className="block text-white mb-2">
-                      البريد الإلكتروني
-                    </label>
-                    <input
-                      type="email"
-                      id="email"
-                      name="email"
-                      value={userData.email}
-                      onChange={handleInputChange}
-                      className="w-full p-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-purple-400 transition-colors"
-                    />
-                  </div>
-
-                  <div>
-                    <label htmlFor="phone" className="block text-white mb-2">
-                      رقم الهاتف
-                    </label>
-                    <input
-                      type="tel"
-                      id="phone"
-                      name="phone"
-                      value={userData.phone}
-                      onChange={handleInputChange}
-                      className="w-full p-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-purple-400 transition-colors"
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label htmlFor="bio" className="block text-white mb-2">
-                    نبذة شخصية
-                  </label>
-                  <textarea
-                    id="bio"
-                    name="bio"
-                    value={userData.bio}
-                    onChange={handleInputChange}
-                    rows={4}
-                    className="w-full p-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-purple-400 transition-colors resize-none"
-                  />
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <label htmlFor="jobTitle" className="block text-white mb-2">
-                      المسمى الوظيفي
-                    </label>
-                    <input
-                      type="text"
-                      id="jobTitle"
-                      name="jobTitle"
-                      value={userData.jobTitle}
-                      onChange={handleInputChange}
-                      className="w-full p-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-purple-400 transition-colors"
-                    />
-                  </div>
-
-                  <div>
-                    <label htmlFor="company" className="block text-white mb-2">
-                      الشركة
-                    </label>
-                    <input
-                      type="text"
-                      id="company"
-                      name="company"
-                      value={userData.company}
-                      onChange={handleInputChange}
-                      className="w-full p-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-purple-400 transition-colors"
-                    />
-                  </div>
-                </div>
-
-                <button
-                  type="submit"
-                  className="w-full py-3 bg-purple-600 text-white rounded-lg font-semibold hover:bg-purple-700 transition-colors hover-glow"
-                >
-                  حفظ التغييرات
-                </button>
-              </form>
-            )}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>

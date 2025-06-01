@@ -1,14 +1,14 @@
 
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Search, Filter, Star, Clock, Users, BookOpen, Award, TrendingUp, Code, Palette, BarChart } from 'lucide-react';
+import { Search, Filter, Star, Clock, Users, BookOpen, Award, TrendingUp, Code, Palette, BarChart, Shield, Megaphone, Database } from 'lucide-react';
 
 const Courses = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('الكل');
   const [selectedLevel, setSelectedLevel] = useState('الكل');
 
-  const categories = ['الكل', 'برمجة', 'تصميم', 'تسويق', 'إدارة أعمال', 'علوم البيانات'];
+  const categories = ['الكل', 'برمجة', 'تصميم', 'تسويق', 'إدارة أعمال', 'علوم البيانات', 'أمن سيبراني'];
   const levels = ['الكل', 'مبتدئ', 'متوسط', 'متقدم'];
 
   const courses = [
@@ -111,6 +111,56 @@ const Courses = () => {
       description: 'أساسيات إدارة المشاريع وأدوات التخطيط الحديثة',
       skills: ['Project Management', 'Agile', 'Scrum', 'Team Leadership'],
       icon: <BookOpen className="w-6 h-6" />
+    },
+    {
+      id: 7,
+      title: 'الأمن السيبراني والحماية الرقمية',
+      instructor: 'دكتور عمر الشريف',
+      category: 'أمن سيبراني',
+      level: 'متقدم',
+      duration: '16 أسبوع',
+      price: '899 جنيه',
+      originalPrice: '1299 جنيه',
+      rating: 4.9,
+      students: 456,
+      image: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=800',
+      description: 'تعلم أساسيات الأمن السيبراني وحماية الأنظمة والشبكات',
+      skills: ['Cybersecurity', 'Network Security', 'Ethical Hacking', 'Risk Assessment'],
+      icon: <Shield className="w-6 h-6" />,
+      isNew: true
+    },
+    {
+      id: 8,
+      title: 'تصميم الشعارات والإعلانات',
+      instructor: 'نادية حسين',
+      category: 'تصميم',
+      level: 'مبتدئ',
+      duration: '6 أسابيع',
+      price: '349 جنيه',
+      originalPrice: '499 جنيه',
+      rating: 4.6,
+      students: 1789,
+      image: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800',
+      description: 'تعلم تصميم الشعارات الاحترافية والإعلانات الجذابة',
+      skills: ['Logo Design', 'Adobe Illustrator', 'Brand Identity', 'Creative Design'],
+      icon: <Megaphone className="w-6 h-6" />,
+      isPopular: true
+    },
+    {
+      id: 9,
+      title: 'إدارة قواعد البيانات MySQL',
+      instructor: 'محمد الصادق',
+      category: 'برمجة',
+      level: 'متوسط',
+      duration: '10 أسابيع',
+      price: '599 جنيه',
+      originalPrice: '849 جنيه',
+      rating: 4.7,
+      students: 743,
+      image: 'https://images.unsplash.com/photo-1544383835-bda2bc66a55d?w=800',
+      description: 'تعلم إدارة وتطوير قواعد البيانات باستخدام MySQL',
+      skills: ['MySQL', 'Database Design', 'SQL Queries', 'Data Management'],
+      icon: <Database className="w-6 h-6" />
     }
   ];
 

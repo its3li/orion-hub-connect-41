@@ -1,22 +1,13 @@
-
 import React, { useState } from 'react';
 import { User, Search, Plus, MessageSquare, Eye, ThumbsUp, Clock, Pin, Star, Filter, Bookmark, Share2 } from 'lucide-react';
+import NewPostModal from '../components/NewPostModal';
 
 const Forum = () => {
   const [selectedCategory, setSelectedCategory] = useState('الكل');
   const [searchTerm, setSearchTerm] = useState('');
   const [sortBy, setSortBy] = useState('latest');
-  
-  const categories = [
-    { id: 'الكل', name: 'الكل', count: 245, color: 'purple' },
-    { id: 'برمجة', name: 'برمجة', count: 89, color: 'blue' },
-    { id: 'تصميم', name: 'تصميم', count: 67, color: 'pink' },
-    { id: 'تسويق', name: 'تسويق', count: 45, color: 'green' },
-    { id: 'إدارة أعمال', name: 'إدارة أعمال', count: 32, color: 'orange' },
-    { id: 'أسئلة عامة', name: 'أسئلة عامة', count: 12, color: 'gray' }
-  ];
-
-  const posts = [
+  const [isNewPostModalOpen, setIsNewPostModalOpen] = useState(false);
+  const [posts, setPosts] = useState([
     {
       id: 1,
       title: 'ما أفضل طريقة لتعلم React للمبتدئين؟',
@@ -117,6 +108,16 @@ const Forum = () => {
         time: 'منذ 5 ساعات'
       }
     }
+  ]);
+
+  const categories = [
+    { id: 'الكل', name: 'الكل', count: 245, color: 'purple' },
+    { id: 'برمجة', name: 'برمجة', count: 89, color: 'blue' },
+    { id: 'تصميم', name: 'تصميم', count: 67, color: 'pink' },
+    { id: 'تسويق', name: 'تسويق', count: 45, color: 'green' },
+    { id: 'إدارة أعمال', name: 'إدارة أعمال', count: 32, color: 'orange' },
+    { id: 'أسئلة عامة', name: 'أسئلة عامة', count: 12, color: 'gray' },
+    { id: 'أمن سيبراني', name: 'أمن سيبراني', count: 8, color: 'red' }
   ];
 
   const popularTags = [
@@ -137,6 +138,30 @@ const Forum = () => {
     { name: 'فاطمة علي', posts: 28, reputation: 1650, avatar: 'ف', level: 'متقدم' },
     { name: 'محمد علي', posts: 25, reputation: 1420, avatar: 'م', level: 'متوسط' }
   ];
+
+  const handleNewPost = (postData: any) => {
+    const newPost = {
+      id: posts.length + 1,
+      title: postData.title,
+      author: postData.author,
+      authorLevel: 'مبتدئ',
+      category: postData.category,
+      replies: 0,
+      views: 1,
+      likes: 0,
+      lastActivity: 'الآن',
+      createdAt: 'الآن',
+      content: postData.content,
+      isAnswered: false,
+      isPinned: false,
+      tags: postData.tags,
+      lastReply: null,
+      images: postData.images,
+      audioFile: postData.audioFile
+    };
+    
+    setPosts([newPost, ...posts]);
+  };
 
   const filteredPosts = posts.filter(post => {
     const matchesSearch = post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -222,7 +247,10 @@ const Forum = () => {
                 </div>
 
                 {/* New Post Button */}
-                <button className="px-6 py-3 bg-purple-600 text-white rounded-lg font-semibold hover:bg-purple-700 transition-colors hover-glow flex items-center whitespace-nowrap">
+                <button 
+                  onClick={() => setIsNewPostModalOpen(true)}
+                  className="px-6 py-3 bg-purple-600 text-white rounded-lg font-semibold hover:bg-purple-700 transition-colors hover-glow flex items-center whitespace-nowrap"
+                >
                   <Plus className="w-5 h-5 mr-2" />
                   موضوع جديد
                 </button>
@@ -250,7 +278,7 @@ const Forum = () => {
             {/* Posts List */}
             <div className="space-y-6">
               {sortedPosts.map(post => (
-                <div key={post.id} className="glass-effect p-6 rounded-2xl hover-glow cursor-pointer transition-all duration-300">
+                <div key={post.id} className="glass-effect p-6 rounded-2xl hover-glow cursor-pointer transition-all duration-300 group">
                   <div className="flex items-start gap-4">
                     {/* Author Avatar */}
                     <div className="w-12 h-12 bg-purple-600 rounded-full flex items-center justify-center text-white font-semibold flex-shrink-0">
@@ -459,6 +487,13 @@ const Forum = () => {
           </div>
         </div>
       </div>
+
+      {/* New Post Modal */}
+      <NewPostModal
+        isOpen={isNewPostModalOpen}
+        onClose={() => setIsNewPostModalOpen(false)}
+        onSubmit={handleNewPost}
+      />
     </div>
   );
 };

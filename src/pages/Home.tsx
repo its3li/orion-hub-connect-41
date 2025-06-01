@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowDown, Star, Users, Award, CheckCircle, TrendingUp, Globe, Play, BookOpen, Briefcase, Code, Palette, BarChart, MessageSquare } from 'lucide-react';
+import { ArrowDown, Star, Users, Award, CheckCircle, TrendingUp, Globe, Play, BookOpen, Briefcase, Code, Palette, BarChart, MessageSquare, User, Building, Freelancer } from 'lucide-react';
 
 const Home = () => {
   const featuredCourses = [
@@ -43,24 +43,45 @@ const Home = () => {
     }
   ];
 
-  const latestNews = [
+  const learningPaths = [
     {
-      title: 'إطلاق مسار جديد في الذكاء الاصطناعي',
-      description: 'نعلن عن إطلاق مسار متكامل لتعلم الذكاء الاصطناعي وتعلم الآلة',
-      date: '15 ديسمبر 2024',
-      image: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=400'
+      type: 'student',
+      title: 'كطالب',
+      icon: <BookOpen className="w-8 h-8" />,
+      color: 'from-blue-500 to-cyan-500',
+      steps: [
+        'اختر المجال الذي يناسب اهتماماتك',
+        'ابدأ بالكورسات التأسيسية',
+        'تدرب على المشاريع العملية',
+        'احصل على شهادة معتمدة',
+        'ابني portfolio قوي'
+      ]
     },
     {
-      title: 'شراكة جديدة مع أكبر الشركات التقنية',
-      description: 'توقيع اتفاقيات شراكة مع شركات عالمية لتوفير فرص عمل للخريجين',
-      date: '10 ديسمبر 2024',
-      image: 'https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=400'
+      type: 'employee',
+      title: 'كموظف',
+      icon: <Briefcase className="w-8 h-8" />,
+      color: 'from-purple-500 to-pink-500',
+      steps: [
+        'حدد المهارات المطلوبة في وظيفتك',
+        'خذ كورسات تطوير المهارات',
+        'تعلم أحدث التقنيات في مجالك',
+        'طبق ما تعلمته في عملك',
+        'اطلب ترقية أو زيادة راتب'
+      ]
     },
     {
-      title: 'نجاح 95% من طلابنا في الحصول على وظائف',
-      description: 'إحصائيات مبهرة تؤكد فعالية برامجنا التدريبية',
-      date: '5 ديسمبر 2024',
-      image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400'
+      type: 'freelancer',
+      title: 'كمستقل',
+      icon: <User className="w-8 h-8" />,
+      color: 'from-green-500 to-emerald-500',
+      steps: [
+        'تعلم مهارات عالية الطلب',
+        'بني portfolio متميز',
+        'تعلم مهارات التسويق الشخصي',
+        'ابدأ في استقبال المشاريع',
+        'وسع شبكة عملائك'
+      ]
     }
   ];
 
@@ -99,6 +120,47 @@ const Home = () => {
 
           <div className="animate-bounce">
             <ArrowDown className="w-8 h-8 text-purple-300 mx-auto" />
+          </div>
+        </div>
+      </section>
+
+      {/* Learning Paths Section */}
+      <section className="py-20 px-4">
+        <div className="container mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-bold text-gradient mb-4">كيف تبدأ رحلتك؟</h2>
+            <p className="text-xl text-gray-300">اختر المسار الذي يناسب وضعك الحالي</p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {learningPaths.map((path, index) => (
+              <div key={index} className="glass-effect p-8 rounded-2xl hover-glow group transform hover:scale-105 transition-all duration-300">
+                <div className={`w-16 h-16 bg-gradient-to-r ${path.color} rounded-full flex items-center justify-center mb-6 mx-auto group-hover:scale-110 transition-transform`}>
+                  {path.icon}
+                </div>
+                <h3 className="text-2xl font-semibold text-white mb-6 text-center">
+                  {path.title}
+                </h3>
+                <div className="space-y-4">
+                  {path.steps.map((step, stepIndex) => (
+                    <div key={stepIndex} className="flex items-start">
+                      <div className={`w-6 h-6 bg-gradient-to-r ${path.color} rounded-full flex items-center justify-center mr-3 mt-1 flex-shrink-0`}>
+                        <span className="text-white text-xs font-bold">{stepIndex + 1}</span>
+                      </div>
+                      <p className="text-gray-300 leading-relaxed">{step}</p>
+                    </div>
+                  ))}
+                </div>
+                <div className="mt-6 text-center">
+                  <Link
+                    to="/register"
+                    className={`inline-block px-6 py-3 bg-gradient-to-r ${path.color} text-white rounded-lg font-semibold hover:opacity-90 transition-opacity`}
+                  >
+                    ابدأ الآن
+                  </Link>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -236,40 +298,6 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Latest News */}
-      <section className="py-20 px-4">
-        <div className="container mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-gradient mb-4">آخر الأخبار</h2>
-            <p className="text-xl text-gray-300">ابق على اطلاع بآخر التطورات والإعلانات</p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {latestNews.map((news, index) => (
-              <div key={index} className="glass-effect rounded-2xl overflow-hidden hover-glow group">
-                <div className="relative overflow-hidden">
-                  <img 
-                    src={news.image} 
-                    alt={news.title}
-                    className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-300"
-                  />
-                  <div className="absolute inset-0 bg-black/20"></div>
-                </div>
-                <div className="p-6">
-                  <div className="text-purple-300 text-sm mb-2">{news.date}</div>
-                  <h3 className="text-lg font-semibold text-white mb-3 group-hover:text-purple-300 transition-colors">
-                    {news.title}
-                  </h3>
-                  <p className="text-gray-300 text-sm leading-relaxed">
-                    {news.description}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* Services Section */}
       <section className="py-20 px-4">
         <div className="container mx-auto">
@@ -347,72 +375,6 @@ const Home = () => {
                 انضم إلينا ←
               </Link>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Statistics */}
-      <section className="py-20 px-4">
-        <div className="container mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-12 text-white">أرقامنا تتحدث</h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-            <div className="glass-effect p-6 rounded-xl hover:scale-105 transition-transform">
-              <div className="text-4xl font-bold text-purple-300 mb-2 animate-pulse">8,903</div>
-              <div className="text-gray-300">طالب مسجل</div>
-              <div className="text-xs text-purple-400 mt-1">نمو 120% هذا العام</div>
-            </div>
-            <div className="glass-effect p-6 rounded-xl hover:scale-105 transition-transform">
-              <div className="text-4xl font-bold text-purple-300 mb-2 animate-pulse">150+</div>
-              <div className="text-gray-300">كورس متاح</div>
-              <div className="text-xs text-purple-400 mt-1">محدث أسبوعياً</div>
-            </div>
-            <div className="glass-effect p-6 rounded-xl hover:scale-105 transition-transform">
-              <div className="text-4xl font-bold text-purple-300 mb-2 animate-pulse">2,450</div>
-              <div className="text-gray-300">فرصة عمل</div>
-              <div className="text-xs text-purple-400 mt-1">جديدة شهرياً</div>
-            </div>
-            <div className="glass-effect p-6 rounded-xl hover:scale-105 transition-transform">
-              <div className="text-4xl font-bold text-purple-300 mb-2 animate-pulse">95%</div>
-              <div className="text-gray-300">معدل الرضا</div>
-              <div className="text-xs text-purple-400 mt-1">تقييم الطلاب</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Testimonials */}
-      <section className="py-20 px-4">
-        <div className="container mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-12 text-white">ماذا يقول طلابنا</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              { name: "أحمد محمد", role: "مطور ويب", text: "ORION غيرت مساري المهني بالكامل. الكورسات عملية والمدربين محترفين.", course: "React" },
-              { name: "فاطمة علي", role: "مصممة جرافيك", text: "أفضل استثمار عملته في نفسي. حصلت على وظيفة أحلامي بعد الكورس مباشرة.", course: "UI/UX" },
-              { name: "محمد حسن", role: "مدير مشاريع", text: "المحتوى ممتاز والمتابعة مستمرة. أنصح الجميع بالتجربة.", course: "إدارة المشاريع" }
-            ].map((review, index) => (
-              <div key={index} className="glass-effect p-6 rounded-xl hover-glow">
-                <div className="flex mb-4">
-                  {[1,2,3,4,5].map(i => (
-                    <Star key={i} className="w-4 h-4 text-yellow-400 fill-current" />
-                  ))}
-                </div>
-                <p className="text-gray-300 mb-4 italic">"{review.text}"</p>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center">
-                    <div className="w-10 h-10 bg-purple-600 rounded-full flex items-center justify-center mr-3">
-                      <span className="text-white font-semibold">{review.name[0]}</span>
-                    </div>
-                    <div>
-                      <div className="text-white font-semibold">{review.name}</div>
-                      <div className="text-purple-300 text-sm">{review.role}</div>
-                    </div>
-                  </div>
-                  <span className="text-xs bg-purple-600/20 text-purple-300 px-2 py-1 rounded">
-                    {review.course}
-                  </span>
-                </div>
-              </div>
-            ))}
           </div>
         </div>
       </section>
