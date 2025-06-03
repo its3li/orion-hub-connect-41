@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Search, Filter, Star, Clock, Users, BookOpen, Award, TrendingUp, Code, Palette, BarChart, Shield, Megaphone, Database } from 'lucide-react';
@@ -22,7 +21,7 @@ const Courses = () => {
       price: '499 جنيه',
       originalPrice: '699 جنيه',
       rating: 4.8,
-      students: 1205,
+      students: 0,
       image: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800',
       description: 'تعلم React من الأساسيات حتى الاحتراف مع مشاريع عملية',
       skills: ['React', 'JavaScript', 'CSS', 'API Integration'],
@@ -39,7 +38,7 @@ const Courses = () => {
       price: '699 جنيه',
       originalPrice: '999 جنيه',
       rating: 4.9,
-      students: 892,
+      students: 0,
       image: 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=800',
       description: 'إنشاء تطبيقات جوال احترافية باستخدام Flutter و Dart',
       skills: ['Flutter', 'Dart', 'Mobile Development', 'Firebase'],
@@ -56,7 +55,7 @@ const Courses = () => {
       price: '399 جنيه',
       originalPrice: '599 جنيه',
       rating: 4.7,
-      students: 1456,
+      students: 0,
       image: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800',
       description: 'أساسيات التصميم وتجربة المستخدم باستخدام Figma و Adobe XD',
       skills: ['Figma', 'Adobe XD', 'UI Design', 'User Research'],
@@ -72,7 +71,7 @@ const Courses = () => {
       price: '549 جنيه',
       originalPrice: '799 جنيه',
       rating: 4.6,
-      students: 2341,
+      students: 0,
       image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800',
       description: 'استراتيجيات التسويق الرقمي ووسائل التواصل الاجتماعي',
       skills: ['Social Media', 'Google Ads', 'SEO', 'Content Marketing'],
@@ -89,7 +88,7 @@ const Courses = () => {
       price: '799 جنيه',
       originalPrice: '1199 جنيه',
       rating: 4.9,
-      students: 687,
+      students: 0,
       image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800',
       description: 'تعلم تحليل البيانات والذكاء الاصطناعي باستخدام Python',
       skills: ['Python', 'Pandas', 'Machine Learning', 'Data Visualization'],
@@ -106,7 +105,7 @@ const Courses = () => {
       price: '449 جنيه',
       originalPrice: '649 جنيه',
       rating: 4.5,
-      students: 1123,
+      students: 0,
       image: 'https://images.unsplash.com/photo-1553877522-43269d4ea984?w=800',
       description: 'أساسيات إدارة المشاريع وأدوات التخطيط الحديثة',
       skills: ['Project Management', 'Agile', 'Scrum', 'Team Leadership'],
@@ -122,7 +121,7 @@ const Courses = () => {
       price: '899 جنيه',
       originalPrice: '1299 جنيه',
       rating: 4.9,
-      students: 456,
+      students: 0,
       image: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=800',
       description: 'تعلم أساسيات الأمن السيبراني وحماية الأنظمة والشبكات',
       skills: ['Cybersecurity', 'Network Security', 'Ethical Hacking', 'Risk Assessment'],
@@ -139,7 +138,7 @@ const Courses = () => {
       price: '349 جنيه',
       originalPrice: '499 جنيه',
       rating: 4.6,
-      students: 1789,
+      students: 0,
       image: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800',
       description: 'تعلم تصميم الشعارات الاحترافية والإعلانات الجذابة',
       skills: ['Logo Design', 'Adobe Illustrator', 'Brand Identity', 'Creative Design'],
@@ -156,7 +155,7 @@ const Courses = () => {
       price: '599 جنيه',
       originalPrice: '849 جنيه',
       rating: 4.7,
-      students: 743,
+      students: 0,
       image: 'https://images.unsplash.com/photo-1544383835-bda2bc66a55d?w=800',
       description: 'تعلم إدارة وتطوير قواعد البيانات باستخدام MySQL',
       skills: ['MySQL', 'Database Design', 'SQL Queries', 'Data Management'],
@@ -241,17 +240,17 @@ const Courses = () => {
           </div>
           <div className="glass-effect p-4 rounded-xl text-center">
             <Users className="w-8 h-8 text-purple-300 mx-auto mb-2" />
-            <div className="text-2xl font-bold text-white">8,903</div>
+            <div className="text-2xl font-bold text-white">0</div>
             <div className="text-gray-300 text-sm">طالب نشط</div>
           </div>
           <div className="glass-effect p-4 rounded-xl text-center">
             <Star className="w-8 h-8 text-purple-300 mx-auto mb-2" />
-            <div className="text-2xl font-bold text-white">4.8</div>
+            <div className="text-2xl font-bold text-white">0</div>
             <div className="text-gray-300 text-sm">متوسط التقييم</div>
           </div>
           <div className="glass-effect p-4 rounded-xl text-center">
             <Award className="w-8 h-8 text-purple-300 mx-auto mb-2" />
-            <div className="text-2xl font-bold text-white">2,450</div>
+            <div className="text-2xl font-bold text-white">0</div>
             <div className="text-gray-300 text-sm">شهادة صادرة</div>
           </div>
         </div>

@@ -11,7 +11,7 @@ const Home = () => {
       price: '499 جنيه',
       originalPrice: '699 جنيه',
       rating: 4.8,
-      students: 1205,
+      students: 0,
       image: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800',
       category: 'برمجة',
       icon: <Code className="w-5 h-5" />
@@ -23,7 +23,7 @@ const Home = () => {
       price: '399 جنيه',
       originalPrice: '599 جنيه',
       rating: 4.7,
-      students: 1456,
+      students: 0,
       image: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800',
       category: 'تصميم',
       icon: <Palette className="w-5 h-5" />
@@ -35,7 +35,7 @@ const Home = () => {
       price: '799 جنيه',
       originalPrice: '1199 جنيه',
       rating: 4.9,
-      students: 687,
+      students: 0,
       image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800',
       category: 'علوم البيانات',
       icon: <BarChart className="w-5 h-5" />
@@ -123,6 +123,61 @@ const Home = () => {
         </div>
       </section>
 
+      {/* Features Section with Images - Moved before Featured Courses */}
+      <section className="py-20 px-4 relative">
+        <div className="container mx-auto">
+          <h2 className="text-4xl font-bold text-center mb-16 text-gradient">
+            لماذا تختار ORION؟
+          </h2>
+          
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-20">
+            <div className="glass-effect p-8 rounded-2xl hover-glow">
+              <Globe className="w-16 h-16 text-purple-400 mb-6" />
+              <h3 className="text-2xl font-semibold text-white mb-4">تعلم من أي مكان</h3>
+              <p className="text-gray-300 leading-relaxed mb-6">
+                احصل على تعليم عالي الجودة من المنزل مع كورسات تفاعلية ومدربين محترفين
+              </p>
+              <ul className="space-y-2 text-gray-300">
+                <li className="flex items-center"><CheckCircle className="w-5 h-5 text-green-400 mr-2" /> محتوى محدث باستمرار</li>
+                <li className="flex items-center"><CheckCircle className="w-5 h-5 text-green-400 mr-2" /> دعم فني 24/7</li>
+                <li className="flex items-center"><CheckCircle className="w-5 h-5 text-green-400 mr-2" /> شهادات معتمدة</li>
+              </ul>
+            </div>
+            <div className="relative">
+              <img 
+                src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=600&h=400&fit=crop" 
+                alt="Online Learning" 
+                className="rounded-2xl shadow-2xl hover:scale-105 transition-transform duration-300"
+              />
+              <div className="absolute inset-0 bg-purple-600/20 rounded-2xl"></div>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div className="relative order-2 lg:order-1">
+              <img 
+                src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=600&h=400&fit=crop" 
+                alt="Team Work" 
+                className="rounded-2xl shadow-2xl hover:scale-105 transition-transform duration-300"
+              />
+              <div className="absolute inset-0 bg-purple-600/20 rounded-2xl"></div>
+            </div>
+            <div className="glass-effect p-8 rounded-2xl hover-glow order-1 lg:order-2">
+              <TrendingUp className="w-16 h-16 text-purple-400 mb-6" />
+              <h3 className="text-2xl font-semibold text-white mb-4">نمو مهني مضمون</h3>
+              <p className="text-gray-300 leading-relaxed mb-6">
+                طور مهاراتك مع خبراء الصناعة واحصل على فرص عمل حقيقية
+              </p>
+              <ul className="space-y-2 text-gray-300">
+                <li className="flex items-center"><CheckCircle className="w-5 h-5 text-green-400 mr-2" /> مشاريع عملية</li>
+                <li className="flex items-center"><CheckCircle className="w-5 h-5 text-green-400 mr-2" /> متابعة شخصية</li>
+                <li className="flex items-center"><CheckCircle className="w-5 h-5 text-green-400 mr-2" /> شبكة مهنية واسعة</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Learning Paths Section */}
       <section className="py-20 px-4">
         <div className="container mx-auto">
@@ -164,7 +219,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Featured Courses */}
+      {/* Featured Courses - Moved after Features */}
       <section className="py-20 px-4">
         <div className="container mx-auto">
           <div className="text-center mb-12">
@@ -238,61 +293,6 @@ const Home = () => {
             >
               عرض جميع الكورسات
             </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Features Section with Images */}
-      <section className="py-20 px-4 relative">
-        <div className="container mx-auto">
-          <h2 className="text-4xl font-bold text-center mb-16 text-gradient">
-            لماذا تختار ORION؟
-          </h2>
-          
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-20">
-            <div className="glass-effect p-8 rounded-2xl hover-glow">
-              <Globe className="w-16 h-16 text-purple-400 mb-6" />
-              <h3 className="text-2xl font-semibold text-white mb-4">تعلم من أي مكان</h3>
-              <p className="text-gray-300 leading-relaxed mb-6">
-                احصل على تعليم عالي الجودة من المنزل مع كورسات تفاعلية ومدربين محترفين
-              </p>
-              <ul className="space-y-2 text-gray-300">
-                <li className="flex items-center"><CheckCircle className="w-5 h-5 text-green-400 mr-2" /> محتوى محدث باستمرار</li>
-                <li className="flex items-center"><CheckCircle className="w-5 h-5 text-green-400 mr-2" /> دعم فني 24/7</li>
-                <li className="flex items-center"><CheckCircle className="w-5 h-5 text-green-400 mr-2" /> شهادات معتمدة</li>
-              </ul>
-            </div>
-            <div className="relative">
-              <img 
-                src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=600&h=400&fit=crop" 
-                alt="Online Learning" 
-                className="rounded-2xl shadow-2xl hover:scale-105 transition-transform duration-300"
-              />
-              <div className="absolute inset-0 bg-purple-600/20 rounded-2xl"></div>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div className="relative order-2 lg:order-1">
-              <img 
-                src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=600&h=400&fit=crop" 
-                alt="Team Work" 
-                className="rounded-2xl shadow-2xl hover:scale-105 transition-transform duration-300"
-              />
-              <div className="absolute inset-0 bg-purple-600/20 rounded-2xl"></div>
-            </div>
-            <div className="glass-effect p-8 rounded-2xl hover-glow order-1 lg:order-2">
-              <TrendingUp className="w-16 h-16 text-purple-400 mb-6" />
-              <h3 className="text-2xl font-semibold text-white mb-4">نمو مهني مضمون</h3>
-              <p className="text-gray-300 leading-relaxed mb-6">
-                طور مهاراتك مع خبراء الصناعة واحصل على فرص عمل حقيقية
-              </p>
-              <ul className="space-y-2 text-gray-300">
-                <li className="flex items-center"><CheckCircle className="w-5 h-5 text-green-400 mr-2" /> مشاريع عملية</li>
-                <li className="flex items-center"><CheckCircle className="w-5 h-5 text-green-400 mr-2" /> متابعة شخصية</li>
-                <li className="flex items-center"><CheckCircle className="w-5 h-5 text-green-400 mr-2" /> شبكة مهنية واسعة</li>
-              </ul>
-            </div>
           </div>
         </div>
       </section>
