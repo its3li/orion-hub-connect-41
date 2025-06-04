@@ -1,4 +1,3 @@
-
 import React from 'react';
 
 const About = () => {
@@ -24,15 +23,15 @@ const About = () => {
             </p>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               <div className="text-center">
-                <div className="text-4xl font-bold text-purple-300 mb-2">2024</div>
+                <div className="text-4xl font-bold text-purple-300 mb-2">2025</div>
                 <div className="text-gray-300">سنة التأسيس</div>
               </div>
               <div className="text-center">
-                <div className="text-4xl font-bold text-purple-300 mb-2">10K+</div>
+                <div className="text-4xl font-bold text-purple-300 mb-2">0</div>
                 <div className="text-gray-300">طالب مسجل</div>
               </div>
               <div className="text-center">
-                <div className="text-4xl font-bold text-purple-300 mb-2">100+</div>
+                <div className="text-4xl font-bold text-purple-300 mb-2">0</div>
                 <div className="text-gray-300">كورس متخصص</div>
               </div>
             </div>
@@ -77,7 +76,7 @@ const About = () => {
             <div className="space-y-6 text-gray-300 leading-relaxed">
               <p>
                 بدأت فكرة ORION من رؤية بسيطة: جعل التعلم والنمو المهني متاحاً للجميع. 
-                في عام 2024، لاحظنا الفجوة الكبيرة بين المهارات المطلوبة في سوق العمل 
+                في عام 2025، لاحظنا الفجوة الكبيرة بين المهارات المطلوبة في سوق العمل 
                 والمهارات المتوفرة لدى الخريجين والمهنيين الطموحين.
               </p>
               <p>
@@ -94,29 +93,47 @@ const About = () => {
             <div className="space-y-4">
               <div className="bg-white/5 p-4 rounded-xl">
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-purple-300 font-semibold">معدل إكمال الكورسات</span>
-                  <span className="text-white font-bold">89%</span>
+                  <span className="text-white font-semibold">الخبرة في البرمجة</span>
+                  <span className="text-purple-400 font-bold">70%</span>
                 </div>
                 <div className="w-full bg-gray-700 rounded-full h-2">
-                  <div className="bg-gradient-to-r from-purple-600 to-pink-600 h-2 rounded-full" style={{ width: '89%' }}></div>
+                  <div className="bg-purple-500 h-2 rounded-full" style={{ width: '70%' }}></div>
                 </div>
               </div>
               <div className="bg-white/5 p-4 rounded-xl">
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-purple-300 font-semibold">معدل الرضا</span>
-                  <span className="text-white font-bold">96%</span>
+                  <span className="text-white font-semibold">الذكاء الاصطناعي</span>
+                  <span className="text-purple-400 font-bold">65%</span>
                 </div>
                 <div className="w-full bg-gray-700 rounded-full h-2">
-                  <div className="bg-gradient-to-r from-green-600 to-blue-600 h-2 rounded-full" style={{ width: '96%' }}></div>
+                  <div className="bg-purple-500 h-2 rounded-full" style={{ width: '65%' }}></div>
                 </div>
               </div>
               <div className="bg-white/5 p-4 rounded-xl">
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-purple-300 font-semibold">معدل الحصول على عمل</span>
-                  <span className="text-white font-bold">78%</span>
+                  <span className="text-white font-semibold">التصميم</span>
+                  <span className="text-purple-400 font-bold">95%</span>
                 </div>
                 <div className="w-full bg-gray-700 rounded-full h-2">
-                  <div className="bg-gradient-to-r from-yellow-600 to-orange-600 h-2 rounded-full" style={{ width: '78%' }}></div>
+                  <div className="bg-purple-500 h-2 rounded-full" style={{ width: '95%' }}></div>
+                </div>
+              </div>
+              <div className="bg-white/5 p-4 rounded-xl">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-white font-semibold">التسويق والدعاية</span>
+                  <span className="text-purple-400 font-bold">80%</span>
+                </div>
+                <div className="w-full bg-gray-700 rounded-full h-2">
+                  <div className="bg-purple-500 h-2 rounded-full" style={{ width: '80%' }}></div>
+                </div>
+              </div>
+              <div className="bg-white/5 p-4 rounded-xl">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-white font-semibold">مجالات أخرى</span>
+                  <span className="text-purple-400 font-bold">80%</span>
+                </div>
+                <div className="w-full bg-gray-700 rounded-full h-2">
+                  <div className="bg-purple-500 h-2 rounded-full" style={{ width: '80%' }}></div>
                 </div>
               </div>
             </div>
@@ -169,27 +186,27 @@ const About = () => {
               <div className="w-32 h-32 bg-gradient-to-br from-purple-600 to-pink-600 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
                 <span className="text-4xl">👨‍💼</span>
               </div>
-              <h3 className="text-xl font-semibold text-white mb-2">أحمد محمد علي</h3>
+              <h3 className="text-xl font-semibold text-white mb-2">يوسف عمرو دياب</h3>
               <p className="text-purple-300 mb-3">المؤسس والمدير التنفيذي</p>
-              <p className="text-gray-300 text-sm">خبرة 15 سنة في التكنولوجيا والتعليم، حاصل على ماجستير في إدارة الأعمال</p>
+              <p className="text-gray-300 text-sm">خبرة سنتين في التكنولوجيا والتعليم، حاصل على ماجستير في إدارة الأعمال</p>
             </div>
 
             <div className="text-center group">
               <div className="w-32 h-32 bg-gradient-to-br from-blue-600 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
                 <span className="text-4xl">👩‍💻</span>
               </div>
-              <h3 className="text-xl font-semibold text-white mb-2">فاطمة أحمد حسن</h3>
-              <p className="text-purple-300 mb-3">مديرة التطوير التقني</p>
-              <p className="text-gray-300 text-sm">متخصصة في تطوير المنصات التعليمية وخبيرة في تقنيات الذكاء الاصطناعي</p>
+              <h3 className="text-xl font-semibold text-white mb-2">علي محمود</h3>
+              <p className="text-purple-300 mb-3">مدير النظام والتوظيف</p>
+              <p className="text-gray-300 text-sm">متخصص في إدارة الأنظمة وتطوير استراتيجيات التوظيف الفعالة</p>
             </div>
 
             <div className="text-center group">
               <div className="w-32 h-32 bg-gradient-to-br from-green-600 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
                 <span className="text-4xl">👨‍🎓</span>
               </div>
-              <h3 className="text-xl font-semibold text-white mb-2">محمد علي سالم</h3>
-              <p className="text-purple-300 mb-3">مدير المحتوى التعليمي</p>
-              <p className="text-gray-300 text-sm">خبير في تصميم المناهج والبرامج التدريبية مع خبرة 12 سنة في التعليم</p>
+              <h3 className="text-xl font-semibold text-white mb-2">براء يسري</h3>
+              <p className="text-purple-300 mb-3">مدير المحتوى</p>
+              <p className="text-gray-300 text-sm">خبير في تصميم المناهج والبرامج التدريبية وإنتاج المحتوى التعليمي</p>
             </div>
           </div>
         </div>
@@ -200,27 +217,27 @@ const About = () => {
             <h2 className="text-2xl font-bold text-white mb-6">إنجازاتنا بالأرقام</h2>
             <div className="grid grid-cols-2 gap-6">
               <div className="text-center">
-                <div className="text-3xl font-bold text-purple-300 mb-2">10,000+</div>
+                <div className="text-3xl font-bold text-purple-300 mb-2">0</div>
                 <div className="text-gray-300 text-sm">طالب مسجل</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-purple-300 mb-2">100+</div>
+                <div className="text-3xl font-bold text-purple-300 mb-2">0</div>
                 <div className="text-gray-300 text-sm">كورس متخصص</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-purple-300 mb-2">500+</div>
+                <div className="text-3xl font-bold text-purple-300 mb-2">0</div>
                 <div className="text-gray-300 text-sm">فرصة عمل</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-purple-300 mb-2">96%</div>
+                <div className="text-3xl font-bold text-purple-300 mb-2">0%</div>
                 <div className="text-gray-300 text-sm">معدل الرضا</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-purple-300 mb-2">50+</div>
+                <div className="text-3xl font-bold text-purple-300 mb-2">0</div>
                 <div className="text-gray-300 text-sm">مدرب معتمد</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-purple-300 mb-2">25+</div>
+                <div className="text-3xl font-bold text-purple-300 mb-2">0</div>
                 <div className="text-gray-300 text-sm">شركة شريكة</div>
               </div>
             </div>
@@ -228,33 +245,11 @@ const About = () => {
 
           <div className="glass-effect p-8 rounded-2xl">
             <h2 className="text-2xl font-bold text-white mb-6">جوائز وشهادات</h2>
-            <div className="space-y-4">
-              <div className="flex items-center">
-                <div className="w-12 h-12 bg-yellow-600 rounded-full flex items-center justify-center mr-4">
-                  <span className="text-white text-xl">🏆</span>
-                </div>
-                <div>
-                  <h4 className="text-white font-semibold">أفضل منصة تعليمية 2024</h4>
-                  <p className="text-gray-300 text-sm">جائزة التميز في التعليم الرقمي</p>
-                </div>
-              </div>
-              <div className="flex items-center">
-                <div className="w-12 h-12 bg-green-600 rounded-full flex items-center justify-center mr-4">
-                  <span className="text-white text-xl">✅</span>
-                </div>
-                <div>
-                  <h4 className="text-white font-semibold">شهادة الجودة ISO 9001</h4>
-                  <p className="text-gray-300 text-sm">معتمدة في إدارة الجودة التعليمية</p>
-                </div>
-              </div>
-              <div className="flex items-center">
-                <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center mr-4">
-                  <span className="text-white text-xl">🎖️</span>
-                </div>
-                <div>
-                  <h4 className="text-white font-semibold">شريك معتمد</h4>
-                  <p className="text-gray-300 text-sm">وزارة التعليم العالي والبحث العلمي</p>
-                </div>
+            <div className="text-center py-8">
+              <div className="text-gray-400">
+                <span className="text-4xl mb-4 block">🏆</span>
+                <p>لا توجد جوائز أو شهادات حالياً</p>
+                <p className="text-sm mt-2">نسعى لتحقيق المزيد من الإنجازات</p>
               </div>
             </div>
           </div>
