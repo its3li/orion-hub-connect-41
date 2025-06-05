@@ -21,6 +21,34 @@ const Login = () => {
     e.preventDefault();
     // Simulate login - in real app, this would be API call
     console.log('Login attempt:', formData);
+    
+    // Set login status
+    localStorage.setItem('isLoggedIn', 'true');
+    
+    // Check if user has registration data, if not create basic profile
+    const existingUserData = localStorage.getItem('userData');
+    if (!existingUserData) {
+      const basicUserData = {
+        firstName: '',
+        lastName: '',
+        email: formData.email,
+        phone: '',
+        skills: '',
+        accountType: '',
+        experience: '',
+        bio: '',
+        location: '',
+        website: '',
+        jobTitle: '',
+        company: '',
+        joinDate: new Date().toLocaleDateString('ar-EG', { year: 'numeric', month: 'long' }),
+        birthDate: '',
+        languages: '',
+        interests: ''
+      };
+      localStorage.setItem('userData', JSON.stringify(basicUserData));
+    }
+    
     // Redirect to profile page
     navigate('/profile');
   };
