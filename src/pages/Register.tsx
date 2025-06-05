@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { User } from 'lucide-react';
@@ -11,19 +12,37 @@ const Register = () => {
     confirmPassword: '',
     phone: '',
     skills: '',
+    accountType: '',
     experience: ''
   });
+  const [passwordError, setPasswordError] = useState('');
   const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [name]: value
     });
+
+    // Validate password length
+    if (name === 'password') {
+      if (value.length < 8 && value.length > 0) {
+        setPasswordError('كلمة المرور يجب أن تكون 8 أحرف على الأقل');
+      } else {
+        setPasswordError('');
+      }
+    }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (formData.password.length < 8) {
+      setPasswordError('كلمة المرور يجب أن تكون 8 أحرف على الأقل');
+      return;
+    }
+    
     if (formData.password !== formData.confirmPassword) {
       alert('كلمات المرور غير متطابقة');
       return;
@@ -142,9 +161,12 @@ const Register = () => {
                   value={formData.password}
                   onChange={handleChange}
                   className="w-full p-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-purple-400 transition-colors"
-                  placeholder="كلمة المرور"
+                  placeholder="كلمة المرور (8 أحرف على الأقل)"
                   required
                 />
+                {passwordError && (
+                  <p className="text-red-400 text-sm mt-1">{passwordError}</p>
+                )}
               </div>
 
               <div>
@@ -177,6 +199,26 @@ const Register = () => {
                 className="w-full p-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-purple-400 transition-colors resize-none"
                 placeholder="اذكر مهاراتك (مثل: برمجة، تصميم، تسويق...)"
               />
+            </div>
+
+            <div>
+              <label htmlFor="accountType" className="block text-white mb-2">
+                نوع الحساب
+              </label>
+              <select
+                id="accountType"
+                name="accountType"
+                value={formData.accountType}
+                onChange={handleChange}
+                className="w-full p-3 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:border-purple-400 transition-colors"
+                required
+              >
+                <option value="">اختر نوع الحساب</option>
+                <option value="طالب">طالب</option>
+                <option value="معلم">معلم</option>
+                <option value="مستقل">مستقل</option>
+                <option value="موظف">موظف</option>
+              </select>
             </div>
 
             <div>
