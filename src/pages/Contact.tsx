@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Instagram, MessageCircle } from 'lucide-react';
+import { MessageCircle } from 'lucide-react';
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -88,7 +88,7 @@ const Contact = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label htmlFor="phone" className="block text-white mb-2">
-                    رقم الهاتف
+                    رقم الهاتف *
                   </label>
                   <input
                     type="tel"
@@ -97,7 +97,8 @@ const Contact = () => {
                     value={formData.phone}
                     onChange={handleChange}
                     className="w-full p-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-purple-400 transition-colors"
-                    placeholder="رقم الهاتف (اختياري)"
+                    placeholder="رقم الهاتف"
+                    required
                   />
                 </div>
 
@@ -174,7 +175,7 @@ const Contact = () => {
                   </div>
                   <div>
                     <p className="text-gray-300">البريد الإلكتروني</p>
-                    <p className="text-white font-semibold">info@orion.com</p>
+                    <p className="text-white font-semibold">orionvp@gmail.com</p>
                   </div>
                 </div>
 
@@ -184,17 +185,21 @@ const Contact = () => {
                   </div>
                   <div>
                     <p className="text-gray-300">الهاتف</p>
-                    <p className="text-white font-semibold">+20 123 456 789</p>
+                    <p className="text-white font-semibold">01021388768</p>
                   </div>
                 </div>
 
                 <div className="flex items-center">
-                  <div className="w-12 h-12 bg-green-600 rounded-full flex items-center justify-center mr-4">
-                    <MessageCircle className="w-6 h-6 text-white" />
+                  <div className="w-12 h-12 bg-green-600 rounded-full flex items-center justify-center mr-4 overflow-hidden">
+                    <img 
+                      src="/lovable-uploads/79ee787e-00cc-42f2-a484-fd8f7e6372ac.png" 
+                      alt="WhatsApp" 
+                      className="w-8 h-8 object-contain"
+                    />
                   </div>
                   <div>
                     <p className="text-gray-300">واتساب</p>
-                    <p className="text-white font-semibold">+20 100 123 456</p>
+                    <p className="text-white font-semibold">01120952576</p>
                   </div>
                 </div>
 
@@ -216,7 +221,7 @@ const Contact = () => {
               <div className="space-y-2 text-gray-300">
                 <div className="flex justify-between">
                   <span>الأحد - الخميس</span>
-                  <span className="text-white">9:00 ص - 6:00 م</span>
+                  <span className="text-white">10:00 ص - 8:00 م</span>
                 </div>
                 <div className="flex justify-between">
                   <span>الجمعة - السبت</span>
@@ -229,23 +234,56 @@ const Contact = () => {
             <div className="glass-effect p-6 rounded-2xl">
               <h3 className="text-xl font-semibold text-white mb-4">تابعنا على</h3>
               <div className="flex space-x-4 space-x-reverse">
-                <a href="#" className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center hover:bg-blue-700 transition-colors">
-                  <span className="text-white text-lg">f</span>
+                <a 
+                  href="https://www.facebook.com/share/1LeVMruGJ2/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="w-12 h-12 rounded-full flex items-center justify-center hover:scale-110 transition-transform overflow-hidden"
+                >
+                  <img 
+                    src="/lovable-uploads/14f48c9f-d3f5-418d-94a7-ddd044bc8d09.png" 
+                    alt="Facebook" 
+                    className="w-12 h-12 object-contain"
+                  />
                 </a>
-                <a href="#" className="w-12 h-12 bg-blue-400 rounded-full flex items-center justify-center hover:bg-blue-500 transition-colors">
-                  <span className="text-white text-lg">T</span>
+                <a 
+                  href="#" 
+                  className="w-12 h-12 rounded-full flex items-center justify-center hover:scale-110 transition-transform overflow-hidden"
+                >
+                  <img 
+                    src="/lovable-uploads/74e38fd8-37c5-4722-bd76-a8cd9f384a95.png" 
+                    alt="X (Twitter)" 
+                    className="w-12 h-12 object-contain"
+                  />
                 </a>
-                <a href="#" className="w-12 h-12 bg-blue-700 rounded-full flex items-center justify-center hover:bg-blue-800 transition-colors">
-                  <span className="text-white text-sm">in</span>
+                <a 
+                  href="https://www.instagram.com/youssef_1o1?igsh=MXFzdmVxdHJ3cmV3YQ==" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="w-12 h-12 rounded-full flex items-center justify-center hover:scale-110 transition-transform overflow-hidden"
+                >
+                  <img 
+                    src="/lovable-uploads/8e03e9ff-560a-469b-9593-5303d584d83c.png" 
+                    alt="Instagram" 
+                    className="w-12 h-12 object-contain"
+                  />
                 </a>
-                <a href="#" className="w-12 h-12 bg-gradient-to-br from-purple-600 to-pink-600 rounded-full flex items-center justify-center hover:from-purple-700 hover:to-pink-700 transition-all">
-                  <Instagram className="w-6 h-6 text-white" />
+                <a 
+                  href="#" 
+                  className="w-12 h-12 rounded-full flex items-center justify-center hover:scale-110 transition-transform overflow-hidden"
+                >
+                  <img 
+                    src="/lovable-uploads/5cf46720-c837-4f2a-8a41-2a21f326808d.png" 
+                    alt="YouTube" 
+                    className="w-12 h-12 object-contain"
+                  />
                 </a>
-                <a href="#" className="w-12 h-12 bg-green-600 rounded-full flex items-center justify-center hover:bg-green-700 transition-colors">
-                  <MessageCircle className="w-6 h-6 text-white" />
-                </a>
-                <a href="#" className="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center hover:bg-red-700 transition-colors">
-                  <span className="text-white text-lg">▶</span>
+                <a href="#" className="w-12 h-12 bg-green-600 rounded-full flex items-center justify-center hover:bg-green-700 transition-colors overflow-hidden">
+                  <img 
+                    src="/lovable-uploads/79ee787e-00cc-42f2-a484-fd8f7e6372ac.png" 
+                    alt="WhatsApp" 
+                    className="w-8 h-8 object-contain"
+                  />
                 </a>
               </div>
             </div>

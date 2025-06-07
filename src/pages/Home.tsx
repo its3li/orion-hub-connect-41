@@ -123,7 +123,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Features Section with Images - Moved before Featured Courses */}
+      {/* Features Section with Images */}
       <section className="py-20 px-4 relative">
         <div className="container mx-auto">
           <h2 className="text-4xl font-bold text-center mb-16 text-gradient">
@@ -145,7 +145,7 @@ const Home = () => {
             </div>
             <div className="relative">
               <img 
-                src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=600&h=400&fit=crop" 
+                src="https://images.unsplash.com/photo-1581092795360-fd1ca04f0952?w=600&h=400&fit=crop" 
                 alt="Online Learning" 
                 className="rounded-2xl shadow-2xl hover:scale-105 transition-transform duration-300"
               />
@@ -156,7 +156,7 @@ const Home = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div className="relative order-2 lg:order-1">
               <img 
-                src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=600&h=400&fit=crop" 
+                src="https://images.unsplash.com/photo-1581090464777-f3220bbe1b8b?w=600&h=400&fit=crop" 
                 alt="Team Work" 
                 className="rounded-2xl shadow-2xl hover:scale-105 transition-transform duration-300"
               />
@@ -219,7 +219,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Featured Courses - Moved after Features */}
+      {/* Featured Courses */}
       <section className="py-20 px-4">
         <div className="container mx-auto">
           <div className="text-center mb-12">
