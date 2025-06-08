@@ -11,6 +11,7 @@ const Navigation = () => {
     { name: 'الرئيسية', path: '/' },
     { name: 'الكورسات', path: '/courses' },
     { name: 'الوظائف', path: '/jobs' },
+    { name: 'المتجر', path: '/store' },
     { name: 'المنتدى', path: '/forum' },
     { name: 'عنا', path: '/about' },
     { name: 'تواصل معنا', path: '/contact' },

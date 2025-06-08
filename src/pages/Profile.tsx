@@ -1,12 +1,13 @@
-
 import React, { useState, useEffect } from 'react';
-import { User, Mail, Phone, MapPin, Calendar, Award, BookOpen, Target, TrendingUp, Edit, Save, X, Camera, Star, Clock, Download } from 'lucide-react';
+import { User, Mail, Phone, MapPin, Calendar, Award, BookOpen, Target, TrendingUp, Edit, Save, X, Camera, Star, Clock, Download, LogOut, Trash2 } from 'lucide-react';
 
 const Profile = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userData, setUserData] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [activeTab, setActiveTab] = useState('overview');
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const [deleteAccount, setDeleteAccount] = useState(false);
   const [profileData, setProfileData] = useState({
     firstName: '',
     lastName: '',
@@ -87,6 +88,22 @@ const Profile = () => {
   const handleCancel = () => {
     setTempData(profileData);
     setIsEditing(false);
+  };
+
+  const handleLogout = () => {
+    if (deleteAccount) {
+      // Delete account completely
+      localStorage.removeItem('userData');
+      localStorage.removeItem('isLoggedIn');
+    } else {
+      // Just logout, keep data
+      localStorage.setItem('isLoggedIn', 'false');
+    }
+    setIsLoggedIn(false);
+    setUserData(null);
+    setShowLogoutModal(false);
+    setDeleteAccount(false);
+    window.location.href = '/';
   };
 
   const getFullName = () => {
@@ -249,18 +266,69 @@ const Profile = () => {
                     </button>
                   </>
                 ) : (
-                  <button
-                    onClick={() => setIsEditing(true)}
-                    className="px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors flex items-center gap-2"
-                  >
-                    <Edit className="w-5 h-5" />
-                    تعديل البيانات
-                  </button>
+                  <>
+                    <button
+                      onClick={() => setIsEditing(true)}
+                      className="px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors flex items-center gap-2"
+                    >
+                      <Edit className="w-5 h-5" />
+                      تعديل البيانات
+                    </button>
+                    <button
+                      onClick={() => setShowLogoutModal(true)}
+                      className="px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors flex items-center gap-2"
+                    >
+                      <LogOut className="w-5 h-5" />
+                      تسجيل الخروج
+                    </button>
+                  </>
                 )}
               </div>
             </div>
           </div>
         </div>
+
+        {/* Logout Modal */}
+        {showLogoutModal && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+            <div className="glass-effect p-6 rounded-2xl max-w-md mx-4">
+              <h3 className="text-xl font-bold text-white mb-4">تسجيل الخروج</h3>
+              <p className="text-gray-300 mb-6">هل تريد تسجيل الخروج من حسابك؟</p>
+              
+              <div className="flex items-center gap-3 mb-6">
+                <input
+                  type="checkbox"
+                  id="deleteAccount"
+                  checked={deleteAccount}
+                  onChange={(e) => setDeleteAccount(e.target.checked)}
+                  className="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500"
+                />
+                <label htmlFor="deleteAccount" className="text-gray-300 flex items-center gap-2">
+                  <Trash2 className="w-4 h-4 text-red-500" />
+                  حذف الحساب نهائياً
+                </label>
+              </div>
+              
+              <div className="flex gap-4">
+                <button
+                  onClick={handleLogout}
+                  className="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+                >
+                  تسجيل الخروج
+                </button>
+                <button
+                  onClick={() => {
+                    setShowLogoutModal(false);
+                    setDeleteAccount(false);
+                  }}
+                  className="flex-1 px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
+                >
+                  إلغاء
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Tabs */}
         <div className="glass-effect p-2 rounded-2xl mb-8">

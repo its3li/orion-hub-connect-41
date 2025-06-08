@@ -18,6 +18,7 @@ import CourseDetail from "./components/CourseDetail";
 import Payment from "./pages/Payment";
 import CourseAccess from "./pages/CourseAccess";
 import Forum from "./pages/Forum";
+import Store from "./pages/Store";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -41,6 +42,7 @@ const App = () => (
             <Route path="courses" element={<Courses />} />
             <Route path="course/:id" element={<CourseDetail />} />
             <Route path="payment/:courseId" element={<Payment />} />
+            <Route path="store" element={<Store />} />
             <Route path="forum" element={<Forum />} />
           </Route>
           <Route path="/course-access/:courseId" element={<CourseAccess />} />
