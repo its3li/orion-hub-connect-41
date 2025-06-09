@@ -114,6 +114,28 @@ const Payment = () => {
                 </div>
               </div>
 
+              {/* Vodafone Cash Numbers - Show only when Vodafone is selected */}
+              {selectedMethod === 'vodafone' && (
+                <div className="mb-8 p-6 bg-red-600/20 border border-red-400/30 rounded-lg">
+                  <h3 className="text-lg font-semibold text-white mb-4">أرقام فودافون كاش الخاصة بالموقع</h3>
+                  <div className="space-y-3 mb-4">
+                    <div className="flex items-center justify-between bg-white/10 p-3 rounded-lg">
+                      <span className="text-white font-semibold">الرقم الأول:</span>
+                      <span className="text-red-300 font-bold">01021388768</span>
+                    </div>
+                    <div className="flex items-center justify-between bg-white/10 p-3 rounded-lg">
+                      <span className="text-white font-semibold">الرقم الثاني:</span>
+                      <span className="text-red-300 font-bold">01120952576</span>
+                    </div>
+                  </div>
+                  <div className="bg-yellow-600/20 border border-yellow-400/30 rounded-lg p-4">
+                    <p className="text-yellow-300 text-sm font-semibold">
+                      هذه هي الأرقام الخاصة بفودافون كاش فقط ليس لدينا دفع فودافون كاش الا على هذة الأرقام و سوف يتم التواصل معك خلال ١٠ إلى ١٥ دقيقة من عملية الدفع
+                    </p>
+                  </div>
+                </div>
+              )}
+
               <form onSubmit={handleSubmit} className="space-y-6">
                 {/* Personal Information */}
                 <div>

@@ -7,13 +7,13 @@ const Courses = () => {
   const [selectedCategory, setSelectedCategory] = useState('الكل');
   const [selectedLevel, setSelectedLevel] = useState('الكل');
 
-  const categories = ['الكل', 'برمجة', 'تصميم', 'تسويق', 'إدارة أعمال', 'علوم البيانات', 'أمن سيبراني'];
+  const categories = ['الكل', 'برمجة', 'تصميم', 'تسويق'];
   const levels = ['الكل', 'مبتدئ', 'متوسط', 'متقدم'];
 
   const courses = [
     {
       id: 1,
-      title: 'تطوير تطبيقات الويب باستخدام React',
+      title: 'كورس React',
       instructor: 'أحمد محمد',
       category: 'برمجة',
       level: 'متوسط',
@@ -30,106 +30,23 @@ const Courses = () => {
     },
     {
       id: 2,
-      title: 'تطوير تطبيقات Flutter للجوال',
-      instructor: 'سارة أحمد',
-      category: 'برمجة',
+      title: 'احتراف UI UX',
+      instructor: 'مريم علي',
+      category: 'تصميم',
       level: 'متقدم',
-      duration: '12 أسبوع',
-      price: '699 جنيه',
-      originalPrice: '999 جنيه',
+      duration: '10 أسابيع',
+      price: '599 جنيه',
+      originalPrice: '799 جنيه',
       rating: 4.9,
       students: 0,
-      image: 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=800',
-      description: 'إنشاء تطبيقات جوال احترافية باستخدام Flutter و Dart',
-      skills: ['Flutter', 'Dart', 'Mobile Development', 'Firebase'],
-      icon: <Code className="w-6 h-6" />,
+      image: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800',
+      description: 'احتراف تصميم تجربة المستخدم وواجهات المستخدم باستخدام أحدث الأدوات',
+      skills: ['Figma', 'Adobe XD', 'UI Design', 'User Research'],
+      icon: <Palette className="w-6 h-6" />,
       isNew: true
     },
     {
       id: 3,
-      title: 'تصميم UI/UX احترافي',
-      instructor: 'مريم علي',
-      category: 'تصميم',
-      level: 'مبتدئ',
-      duration: '6 أسابيع',
-      price: '399 جنيه',
-      originalPrice: '599 جنيه',
-      rating: 4.7,
-      students: 0,
-      image: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800',
-      description: 'أساسيات التصميم وتجربة المستخدم باستخدام Figma و Adobe XD',
-      skills: ['Figma', 'Adobe XD', 'UI Design', 'User Research'],
-      icon: <Palette className="w-6 h-6" />
-    },
-    {
-      id: 4,
-      title: 'التسويق الرقمي الشامل',
-      instructor: 'خالد حسن',
-      category: 'تسويق',
-      level: 'متوسط',
-      duration: '10 أسابيع',
-      price: '549 جنيه',
-      originalPrice: '799 جنيه',
-      rating: 4.6,
-      students: 0,
-      image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800',
-      description: 'استراتيجيات التسويق الرقمي ووسائل التواصل الاجتماعي',
-      skills: ['Social Media', 'Google Ads', 'SEO', 'Content Marketing'],
-      icon: <TrendingUp className="w-6 h-6" />,
-      isPopular: true
-    },
-    {
-      id: 5,
-      title: 'تحليل البيانات باستخدام Python',
-      instructor: 'دكتور محمد إبراهيم',
-      category: 'علوم البيانات',
-      level: 'متقدم',
-      duration: '14 أسبوع',
-      price: '799 جنيه',
-      originalPrice: '1199 جنيه',
-      rating: 4.9,
-      students: 0,
-      image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800',
-      description: 'تعلم تحليل البيانات والذكاء الاصطناعي باستخدام Python',
-      skills: ['Python', 'Pandas', 'Machine Learning', 'Data Visualization'],
-      icon: <BarChart className="w-6 h-6" />,
-      isNew: true
-    },
-    {
-      id: 6,
-      title: 'إدارة المشاريع الرقمية',
-      instructor: 'أمينة صالح',
-      category: 'إدارة أعمال',
-      level: 'مبتدئ',
-      duration: '8 أسابيع',
-      price: '449 جنيه',
-      originalPrice: '649 جنيه',
-      rating: 4.5,
-      students: 0,
-      image: 'https://images.unsplash.com/photo-1553877522-43269d4ea984?w=800',
-      description: 'أساسيات إدارة المشاريع وأدوات التخطيط الحديثة',
-      skills: ['Project Management', 'Agile', 'Scrum', 'Team Leadership'],
-      icon: <BookOpen className="w-6 h-6" />
-    },
-    {
-      id: 7,
-      title: 'الأمن السيبراني والحماية الرقمية',
-      instructor: 'دكتور عمر الشريف',
-      category: 'أمن سيبراني',
-      level: 'متقدم',
-      duration: '16 أسبوع',
-      price: '899 جنيه',
-      originalPrice: '1299 جنيه',
-      rating: 4.9,
-      students: 0,
-      image: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=800',
-      description: 'تعلم أساسيات الأمن السيبراني وحماية الأنظمة والشبكات',
-      skills: ['Cybersecurity', 'Network Security', 'Ethical Hacking', 'Risk Assessment'],
-      icon: <Shield className="w-6 h-6" />,
-      isNew: true
-    },
-    {
-      id: 8,
       title: 'تصميم الشعارات والإعلانات',
       instructor: 'نادية حسين',
       category: 'تصميم',
@@ -146,20 +63,20 @@ const Courses = () => {
       isPopular: true
     },
     {
-      id: 9,
-      title: 'إدارة قواعد البيانات MySQL',
+      id: 4,
+      title: 'HTML',
       instructor: 'محمد الصادق',
       category: 'برمجة',
-      level: 'متوسط',
-      duration: '10 أسابيع',
-      price: '599 جنيه',
-      originalPrice: '849 جنيه',
+      level: 'مبتدئ',
+      duration: '4 أسابيع',
+      price: '299 جنيه',
+      originalPrice: '399 جنيه',
       rating: 4.7,
       students: 0,
       image: 'https://images.unsplash.com/photo-1544383835-bda2bc66a55d?w=800',
-      description: 'تعلم إدارة وتطوير قواعد البيانات باستخدام MySQL',
-      skills: ['MySQL', 'Database Design', 'SQL Queries', 'Data Management'],
-      icon: <Database className="w-6 h-6" />
+      description: 'تعلم أساسيات HTML وبناء مواقع الويب من الصفر',
+      skills: ['HTML', 'Web Development', 'Semantic HTML', 'Forms'],
+      icon: <Code className="w-6 h-6" />
     }
   ];
 

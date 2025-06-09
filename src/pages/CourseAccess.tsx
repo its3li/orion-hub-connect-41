@@ -1,22 +1,20 @@
 
 import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, Play, Clock, CheckCircle, FileText, Download, Star, Users, BookOpen, MessageCircle, Share2 } from 'lucide-react';
+import { ArrowLeft, Play, Clock, FileText, Download, BookOpen } from 'lucide-react';
 
 const CourseAccess = () => {
   const { courseId } = useParams();
   const [currentVideo, setCurrentVideo] = useState(0);
-  const [completedLessons, setCompletedLessons] = useState<number[]>([0, 1]);
+  const [completedLessons, setCompletedLessons] = useState<number[]>([]);
 
   const courseData = {
-    title: 'تطوير تطبيقات الويب باستخدام React',
+    title: 'كورس React',
     instructor: 'أحمد محمد',
     duration: '8 أسابيع',
-    totalVideos: 24,
-    totalDuration: '12 ساعة',
-    progress: 25,
-    rating: 4.8,
-    students: 1205,
+    totalVideos: 0,
+    totalDuration: '0 ساعة',
+    progress: 0,
   };
 
   const modules = [
@@ -27,22 +25,6 @@ const CourseAccess = () => {
         { id: 1, title: 'إعداد بيئة التطوير', duration: '20:45', type: 'video', videoUrl: 'https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4' },
         { id: 2, title: 'JSX والمكونات', duration: '25:15', type: 'video', videoUrl: 'https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4' },
         { id: 3, title: 'ملف التمارين - الجزء الأول', duration: '', type: 'file' }
-      ]
-    },
-    {
-      title: 'State والEvents',
-      lessons: [
-        { id: 4, title: 'إدارة الحالة (State)', duration: '30:20', type: 'video', videoUrl: 'https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4' },
-        { id: 5, title: 'التعامل مع الأحداث', duration: '18:45', type: 'video', videoUrl: 'https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4' },
-        { id: 6, title: 'النماذج في React', duration: '22:30', type: 'video', videoUrl: 'https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4' }
-      ]
-    },
-    {
-      title: 'المفاهيم المتقدمة',
-      lessons: [
-        { id: 7, title: 'React Router', duration: '35:10', type: 'video', videoUrl: 'https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4' },
-        { id: 8, title: 'Context API', duration: '28:15', type: 'video', videoUrl: 'https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4' },
-        { id: 9, title: 'React Hooks', duration: '40:30', type: 'video', videoUrl: 'https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4' }
       ]
     }
   ];
@@ -144,27 +126,7 @@ const CourseAccess = () => {
                       <Clock className="w-4 h-4 mr-1" />
                       <span>{currentLesson?.duration}</span>
                     </div>
-                    <div className="flex items-center">
-                      <Users className="w-4 h-4 mr-1" />
-                      <span>{courseData.students} طالب</span>
-                    </div>
-                    <div className="flex items-center">
-                      <Star className="w-4 h-4 mr-1 text-yellow-400" />
-                      <span>{courseData.rating}</span>
-                    </div>
                   </div>
-                </div>
-                <div className="flex items-center gap-2">
-                  <button className="p-2 hover:bg-white/10 rounded-lg transition-colors">
-                    <Share2 className="w-5 h-5 text-gray-300" />
-                  </button>
-                  <button 
-                    className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center"
-                    onClick={() => markAsCompleted(currentVideo)}
-                  >
-                    <CheckCircle className="w-5 h-5 mr-2" />
-                    تم الإكمال
-                  </button>
                 </div>
               </div>
 
@@ -187,45 +149,6 @@ const CourseAccess = () => {
                 >
                   الدرس التالي
                 </button>
-              </div>
-            </div>
-
-            {/* Discussion Section */}
-            <div className="glass-effect p-6 rounded-2xl">
-              <h3 className="text-xl font-semibold text-white mb-4 flex items-center">
-                <MessageCircle className="w-6 h-6 mr-2" />
-                النقاش والأسئلة
-              </h3>
-              <div className="space-y-4">
-                <div className="flex">
-                  <div className="w-10 h-10 bg-purple-600 rounded-full flex items-center justify-center mr-3">
-                    <span className="text-white font-semibold">م</span>
-                  </div>
-                  <div className="flex-1">
-                    <textarea 
-                      placeholder="اكتب سؤالك أو تعليقك هنا..."
-                      className="w-full p-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-purple-400 transition-colors resize-none"
-                      rows={3}
-                    ></textarea>
-                    <button className="mt-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors">
-                      إرسال
-                    </button>
-                  </div>
-                </div>
-
-                {/* Sample Comments */}
-                <div className="border-t border-white/10 pt-4">
-                  <div className="flex mb-4">
-                    <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center mr-3">
-                      <span className="text-white font-semibold">أ</span>
-                    </div>
-                    <div>
-                      <div className="font-semibold text-white">أحمد علي</div>
-                      <div className="text-gray-300 text-sm mb-2">شرح ممتاز! هل يمكن توضيح المزيد عن useState؟</div>
-                      <div className="text-gray-400 text-xs">منذ 3 ساعات</div>
-                    </div>
-                  </div>
-                </div>
               </div>
             </div>
           </div>
@@ -260,20 +183,13 @@ const CourseAccess = () => {
                               ) : (
                                 <FileText className="w-4 h-4 text-purple-300 mr-2" />
                               )}
-                              <span className={`text-sm ${
-                                completedLessons.includes(lesson.id) 
-                                  ? 'text-green-300' 
-                                  : 'text-gray-300'
-                              }`}>
+                              <span className="text-sm text-gray-300">
                                 {lesson.title}
                               </span>
                             </div>
                             <div className="flex items-center gap-2">
                               {lesson.duration && (
                                 <span className="text-xs text-gray-400">{lesson.duration}</span>
-                              )}
-                              {completedLessons.includes(lesson.id) && (
-                                <CheckCircle className="w-4 h-4 text-green-400" />
                               )}
                             </div>
                           </div>
