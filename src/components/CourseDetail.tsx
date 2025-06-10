@@ -1,12 +1,10 @@
-
 import React from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { Clock, Users, Award, Star, PlayCircle, CheckCircle, FileText, Download } from 'lucide-react';
+import { Clock, Users, Award, Star, PlayCircle, CheckCircle, FileText, Download, Crown, Video, Trophy, MessageCircle } from 'lucide-react';
 
 const CourseDetail = () => {
   const { id } = useParams();
   
-  // Mock course data (في التطبيق الحقيقي سيتم جلبها من API)
   const course = {
     id: 1,
     title: 'تطوير تطبيقات الويب باستخدام React',
@@ -16,6 +14,8 @@ const CourseDetail = () => {
     duration: '8 أسابيع',
     price: '499 جنيه',
     originalPrice: '699 جنيه',
+    vipPrice: '799 جنيه',
+    vipOriginalPrice: '999 جنيه',
     rating: 4.8,
     students: 1205,
     reviews: 324,
@@ -30,6 +30,16 @@ const CourseDetail = () => {
       'أفضل الممارسات في React',
       'نشر التطبيق على الإنترنت',
       'مشاريع عملية متقدمة'
+    ],
+    vipFeatures: [
+      'جلسات البث المباشر التفاعلية',
+      'إمكانية التعليق على الفيديوهات',
+      'اختبارات تفاعلية بعد كل محاضرة',
+      'محاضرة إضافية - التطبيق العملي',
+      'دعم فني مباشر 24/7',
+      'مجموعة VIP المغلقة',
+      'شهادة احترافية معتمدة',
+      'وصول مبكر للكورسات الجديدة'
     ],
     curriculum: [
       {
@@ -48,9 +58,10 @@ const CourseDetail = () => {
         duration: '4 ساعات'
       },
       {
-        title: 'مشروع عملي',
+        title: 'مشروع عملي (VIP فقط)',
         lessons: ['تخطيط المشروع', 'بناء المكونات', 'التطبيق النهائي'],
-        duration: '6 ساعات'
+        duration: '6 ساعات',
+        isVip: true
       }
     ],
     requirements: [
@@ -115,53 +126,112 @@ const CourseDetail = () => {
             </div>
           </div>
           
-          {/* Course Card */}
-          <div className="lg:col-span-1">
-            <div className="glass-effect p-6 rounded-2xl sticky top-24">
-              <img 
-                src={course.image} 
-                alt={course.title}
-                className="w-full h-48 object-cover rounded-lg mb-6"
-              />
+          {/* Course Cards */}
+          <div className="lg:col-span-1 space-y-6">
+            {/* Regular Course Card */}
+            <div className="glass-effect p-6 rounded-2xl">
+              <div className="text-center mb-4">
+                <h3 className="text-lg font-semibold text-white mb-2">الاشتراك العادي</h3>
+                <img 
+                  src={course.image} 
+                  alt={course.title}
+                  className="w-full h-32 object-cover rounded-lg mb-4"
+                />
+              </div>
               
-              <div className="text-center mb-6">
+              <div className="text-center mb-4">
                 <div className="flex items-center justify-center mb-2">
-                  <span className="text-3xl font-bold text-purple-300">{course.price}</span>
+                  <span className="text-2xl font-bold text-purple-300">{course.price}</span>
                   <span className="text-lg text-gray-400 line-through mr-3">{course.originalPrice}</span>
                 </div>
                 <div className="text-green-400 text-sm font-semibold">خصم 30%</div>
               </div>
               
-              <Link
-                to={`/payment/${course.id}`}
-                className="w-full bg-purple-600 text-white py-3 rounded-lg font-semibold hover:bg-purple-700 transition-colors hover-glow block text-center mb-4"
-              >
-                اشترك الآن
-              </Link>
-              
-              <button className="w-full glass-effect text-white py-3 rounded-lg font-semibold hover:bg-white/20 transition-colors mb-6">
-                <PlayCircle className="w-5 h-5 inline mr-2" />
-                معاينة مجانية
-              </button>
-              
-              <div className="space-y-3 text-sm">
+              <div className="space-y-3 text-sm mb-6">
                 <div className="flex items-center text-gray-300">
                   <CheckCircle className="w-4 h-4 text-green-400 mr-2" />
-                  <span>وصول مدى الحياة</span>
+                  <span>وصول مدى الحياة للمحتوى</span>
                 </div>
                 <div className="flex items-center text-gray-300">
                   <CheckCircle className="w-4 h-4 text-green-400 mr-2" />
-                  <span>شهادة إتمام</span>
-                </div>
-                <div className="flex items-center text-gray-300">
-                  <CheckCircle className="w-4 h-4 text-green-400 mr-2" />
-                  <span>دعم فني مباشر</span>
+                  <span>جميع فيديوهات الكورس</span>
                 </div>
                 <div className="flex items-center text-gray-300">
                   <CheckCircle className="w-4 h-4 text-green-400 mr-2" />
                   <span>مواد تدريبية قابلة للتحميل</span>
                 </div>
+                <div className="flex items-center text-gray-300">
+                  <CheckCircle className="w-4 h-4 text-green-400 mr-2" />
+                  <span>شهادة إتمام أساسية</span>
+                </div>
               </div>
+              
+              <Link
+                to={`/payment/${course.id}?plan=regular`}
+                className="w-full bg-purple-600 text-white py-3 rounded-lg font-semibold hover:bg-purple-700 transition-colors hover-glow block text-center mb-3"
+              >
+                اشترك الآن
+              </Link>
+              
+              <button className="w-full glass-effect text-white py-3 rounded-lg font-semibold hover:bg-white/20 transition-colors">
+                <PlayCircle className="w-5 h-5 inline mr-2" />
+                معاينة مجانية
+              </button>
+            </div>
+
+            {/* VIP Course Card */}
+            <div className="glass-effect p-6 rounded-2xl border-2 border-yellow-500/50 relative overflow-hidden">
+              {/* VIP Badge */}
+              <div className="absolute top-0 right-0 bg-gradient-to-l from-yellow-500 to-yellow-600 text-black px-4 py-1 text-sm font-bold flex items-center">
+                <Crown className="w-4 h-4 mr-1" />
+                VIP
+              </div>
+              
+              <div className="text-center mb-4 mt-4">
+                <h3 className="text-lg font-semibold text-white mb-2">اشتراك VIP المميز</h3>
+                <img 
+                  src={course.image} 
+                  alt={course.title}
+                  className="w-full h-32 object-cover rounded-lg mb-4 border-2 border-yellow-500/50"
+                />
+              </div>
+              
+              <div className="text-center mb-4">
+                <div className="flex items-center justify-center mb-2">
+                  <span className="text-2xl font-bold text-yellow-400">{course.vipPrice}</span>
+                  <span className="text-lg text-gray-400 line-through mr-3">{course.vipOriginalPrice}</span>
+                </div>
+                <div className="text-green-400 text-sm font-semibold">خصم 20% - عرض محدود!</div>
+              </div>
+
+              {/* VIP Features Preview */}
+              <div className="space-y-2 text-sm mb-6">
+                <div className="text-yellow-400 font-semibold mb-2">مميزات حصرية:</div>
+                <div className="flex items-center text-gray-300">
+                  <Video className="w-4 h-4 text-yellow-400 mr-2" />
+                  <span>بث مباشر تفاعلي</span>
+                </div>
+                <div className="flex items-center text-gray-300">
+                  <MessageCircle className="w-4 h-4 text-yellow-400 mr-2" />
+                  <span>تعليقات ومناقشات</span>
+                </div>
+                <div className="flex items-center text-gray-300">
+                  <Trophy className="w-4 h-4 text-yellow-400 mr-2" />
+                  <span>اختبارات تفاعلية</span>
+                </div>
+                <div className="flex items-center text-gray-300">
+                  <Crown className="w-4 h-4 text-yellow-400 mr-2" />
+                  <span>محاضرة إضافية حصرية</span>
+                </div>
+              </div>
+              
+              <Link
+                to={`/payment/${course.id}?plan=vip`}
+                className="w-full bg-gradient-to-r from-yellow-500 to-yellow-600 text-black py-3 rounded-lg font-semibold hover:from-yellow-600 hover:to-yellow-700 transition-all hover-glow block text-center mb-3"
+              >
+                <Crown className="w-5 h-5 inline mr-2" />
+                اشترك في VIP
+              </Link>
             </div>
           </div>
         </div>
@@ -181,16 +251,41 @@ const CourseDetail = () => {
                 ))}
               </div>
             </div>
+
+            {/* VIP Features */}
+            <div className="glass-effect p-8 rounded-2xl border border-yellow-500/30">
+              <h2 className="text-2xl font-bold text-white mb-6 flex items-center">
+                <Crown className="w-6 h-6 text-yellow-500 mr-2" />
+                مميزات VIP الحصرية
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {course.vipFeatures.map((feature, index) => (
+                  <div key={index} className="flex items-center">
+                    <Crown className="w-5 h-5 text-yellow-400 mr-3 flex-shrink-0" />
+                    <span className="text-gray-300">{feature}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
             
             {/* Curriculum */}
             <div className="glass-effect p-8 rounded-2xl">
               <h2 className="text-2xl font-bold text-white mb-6">محتوى الكورس</h2>
               <div className="space-y-4">
                 {course.curriculum.map((section, index) => (
-                  <div key={index} className="border border-white/20 rounded-lg">
-                    <div className="p-4 bg-white/5 rounded-t-lg">
+                  <div key={index} className={`border rounded-lg ${
+                    section.isVip ? 'border-yellow-500/50 bg-yellow-500/5' : 'border-white/20'
+                  }`}>
+                    <div className={`p-4 rounded-t-lg ${
+                      section.isVip ? 'bg-yellow-500/10' : 'bg-white/5'
+                    }`}>
                       <div className="flex items-center justify-between">
-                        <h3 className="text-lg font-semibold text-white">{section.title}</h3>
+                        <div className="flex items-center">
+                          <h3 className="text-lg font-semibold text-white">{section.title}</h3>
+                          {section.isVip && (
+                            <Crown className="w-5 h-5 text-yellow-500 mr-2" />
+                          )}
+                        </div>
                         <span className="text-purple-300 text-sm">{section.duration}</span>
                       </div>
                     </div>
