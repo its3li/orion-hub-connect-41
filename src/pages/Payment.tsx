@@ -1,11 +1,11 @@
-
 import React, { useState } from 'react';
-import { useParams, useSearchParams, Link } from 'react-router-dom';
+import { useParams, useSearchParams, Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, CreditCard, Smartphone, CheckCircle, Crown, AlertCircle } from 'lucide-react';
 
 const Payment = () => {
   const { courseId } = useParams();
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
   const plan = searchParams.get('plan') || 'regular';
   const [paymentMethod, setPaymentMethod] = useState('card');
   const [formData, setFormData] = useState({
@@ -42,8 +42,8 @@ const Payment = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // سيتم ربطها بنظام الدفع الحقيقي
-    alert('تم إرسال طلب الدفع بنجاح! سيتم التواصل معك قريباً.');
+    // Redirect to course access page immediately
+    navigate(`/course-access/${courseId}`);
   };
 
   return (
