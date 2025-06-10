@@ -1,6 +1,5 @@
-
 import React, { useState, useRef, useEffect } from 'react';
-import { Play, Pause, SkipBack, SkipForward, Volume2, Maximize, Settings, Brightness7 } from 'lucide-react';
+import { Play, Pause, SkipBack, SkipForward, Volume2, Maximize, Settings, Sun } from 'lucide-react';
 
 interface VideoPlayerProps {
   videoUrl: string;
@@ -190,7 +189,7 @@ const VideoPlayer = ({ videoUrl, title, onVideoEnd, onTimeUpdate }: VideoPlayerP
               <div>
                 <label className="block text-sm mb-2">السطوع</label>
                 <div className="flex items-center gap-2">
-                  <Brightness7 className="w-4 h-4" />
+                  <Sun className="w-4 h-4" />
                   <input
                     type="range"
                     min="50"
