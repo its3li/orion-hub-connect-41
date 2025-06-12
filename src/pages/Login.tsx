@@ -49,6 +49,9 @@ const Login = () => {
       localStorage.setItem('userData', JSON.stringify(basicUserData));
     }
     
+    // Trigger a storage event to update other components
+    window.dispatchEvent(new Event('storage'));
+    
     // Redirect to profile page
     navigate('/profile');
   };

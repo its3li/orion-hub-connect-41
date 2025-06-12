@@ -1,10 +1,11 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, User } from 'lucide-react';
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const location = useLocation();
 
   const navItems = [
@@ -18,6 +19,26 @@ const Navigation = () => {
   ];
 
   const isActive = (path: string) => location.pathname === path;
+
+  // Check login status on component mount and location change
+  useEffect(() => {
+    const checkLoginStatus = () => {
+      const loginStatus = localStorage.getItem('isLoggedIn');
+      setIsLoggedIn(loginStatus === 'true');
+    };
+    
+    checkLoginStatus();
+    
+    // Listen for storage changes (when user logs in/out in another tab)
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === 'isLoggedIn') {
+        checkLoginStatus();
+      }
+    };
+    
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
+  }, [location]);
 
   return (
     <nav className="glass-effect fixed w-full top-0 z-50 border-b border-white/20">
@@ -45,24 +66,29 @@ const Navigation = () => {
 
           {/* User Menu */}
           <div className="hidden md:flex items-center space-x-4">
-            <Link
-              to="/login"
-              className="px-4 py-2 text-white hover:text-purple-300 transition-colors"
-            >
-              تسجيل الدخول
-            </Link>
-            <Link
-              to="/register"
-              className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors hover-glow"
-            >
-              إنشاء حساب
-            </Link>
-            <Link
-              to="/profile"
-              className="p-2 rounded-full bg-purple-600/20 hover:bg-purple-600/40 transition-colors"
-            >
-              <User className="w-5 h-5" />
-            </Link>
+            {!isLoggedIn ? (
+              <>
+                <Link
+                  to="/login"
+                  className="px-4 py-2 text-white hover:text-purple-300 transition-colors"
+                >
+                  تسجيل الدخول
+                </Link>
+                <Link
+                  to="/register"
+                  className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors hover-glow"
+                >
+                  إنشاء حساب
+                </Link>
+              </>
+            ) : (
+              <Link
+                to="/profile"
+                className="p-2 rounded-full bg-purple-600/20 hover:bg-purple-600/40 transition-colors"
+              >
+                <User className="w-5 h-5" />
+              </Link>
+            )}
           </div>
 
           {/* Mobile menu button */}
@@ -90,20 +116,32 @@ const Navigation = () => {
               </Link>
             ))}
             <div className="mt-4 pt-4 border-t border-white/20 space-y-2">
-              <Link
-                to="/login"
-                className="block py-2 px-4 text-white hover:text-purple-300 transition-colors"
-                onClick={() => setIsOpen(false)}
-              >
-                تسجيل الدخول
-              </Link>
-              <Link
-                to="/register"
-                className="block py-2 px-4 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
-                onClick={() => setIsOpen(false)}
-              >
-                إنشاء حساب
-              </Link>
+              {!isLoggedIn ? (
+                <>
+                  <Link
+                    to="/login"
+                    className="block py-2 px-4 text-white hover:text-purple-300 transition-colors"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    تسجيل الدخول
+                  </Link>
+                  <Link
+                    to="/register"
+                    className="block py-2 px-4 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    إنشاء حساب
+                  </Link>
+                </>
+              ) : (
+                <Link
+                  to="/profile"
+                  className="block py-2 px-4 text-white hover:text-purple-300 transition-colors"
+                  onClick={() => setIsOpen(false)}
+                >
+                  الملف الشخصي
+                </Link>
+              )}
             </div>
           </div>
         )}
