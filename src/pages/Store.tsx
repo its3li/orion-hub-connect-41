@@ -1,6 +1,6 @@
 
-import React, { useState } from 'react';
-import { Search, Filter, ShoppingBag, Star, Eye, Download, User, Grid, List } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Search, Filter, ShoppingBag, Star, Eye, Download, User, Grid, List, Plus } from 'lucide-react';
 
 const Store = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -8,6 +8,7 @@ const Store = () => {
   const [selectedCategory, setSelectedCategory] = useState('الكل');
   const [viewMode, setViewMode] = useState('grid');
   const [sortBy, setSortBy] = useState('الأحدث');
+  const [canSell, setCanSell] = useState(false);
 
   const categories = [
     'الكل',
@@ -28,37 +29,52 @@ const Store = () => {
     'السعر: من الأعلى للأقل'
   ];
 
+  // Check if user can sell based on account type
+  useEffect(() => {
+    const userData = localStorage.getItem('userData');
+    if (userData) {
+      const user = JSON.parse(userData);
+      setCanSell(user.accountType === 'مستقل' || user.accountType === 'معلم');
+    }
+  }, []);
+
   // Sample products data (empty for now as requested)
   const products = [];
 
   const EmptyState = () => (
     <div className="text-center py-16">
       <ShoppingBag className="w-24 h-24 mx-auto mb-6 text-gray-500" />
-      <h3 className="text-2xl font-bold text-white mb-4">المتجر قيد التطوير</h3>
-      <p className="text-gray-300 mb-6">
+      <h3 className="text-2xl font-bold text-white mb-4 px-4">المتجر قيد التطوير</h3>
+      <p className="text-gray-300 mb-6 px-4">
         سيتم إضافة المنتجات والأعمال قريباً. ترقبوا إطلاق منتجات المستقلين والمطورين المميزة
       </p>
+      {canSell && (
+        <button className="mb-6 px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center gap-2 mx-auto">
+          <Plus className="w-5 h-5" />
+          إضافة منتج للبيع
+        </button>
+      )}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto mt-12">
         <div className="glass-effect p-6 rounded-2xl">
           <div className="w-16 h-16 bg-purple-600/20 rounded-full flex items-center justify-center mx-auto mb-4">
             <Grid className="w-8 h-8 text-purple-400" />
           </div>
-          <h4 className="text-lg font-semibold text-white mb-2">قوالب ومشاريع</h4>
-          <p className="text-gray-400 text-sm">تصفح مجموعة واسعة من القوالب والمشاريع الجاهزة</p>
+          <h4 className="text-lg font-semibold text-white mb-2 px-2">قوالب ومشاريع</h4>
+          <p className="text-gray-400 text-sm px-2">تصفح مجموعة واسعة من القوالب والمشاريع الجاهزة</p>
         </div>
         <div className="glass-effect p-6 rounded-2xl">
           <div className="w-16 h-16 bg-purple-600/20 rounded-full flex items-center justify-center mx-auto mb-4">
             <User className="w-8 h-8 text-purple-400" />
           </div>
-          <h4 className="text-lg font-semibold text-white mb-2">أعمال المستقلين</h4>
-          <p className="text-gray-400 text-sm">اكتشف أعمال المطورين والمصممين المحترفين</p>
+          <h4 className="text-lg font-semibold text-white mb-2 px-2">أعمال المستقلين</h4>
+          <p className="text-gray-400 text-sm px-2">اكتشف أعمال المطورين والمصممين المحترفين</p>
         </div>
         <div className="glass-effect p-6 rounded-2xl">
           <div className="w-16 h-16 bg-purple-600/20 rounded-full flex items-center justify-center mx-auto mb-4">
             <Star className="w-8 h-8 text-purple-400" />
           </div>
-          <h4 className="text-lg font-semibold text-white mb-2">جودة مضمونة</h4>
-          <p className="text-gray-400 text-sm">جميع المنتجات مراجعة ومعتمدة لضمان الجودة</p>
+          <h4 className="text-lg font-semibold text-white mb-2 px-2">جودة مضمونة</h4>
+          <p className="text-gray-400 text-sm px-2">جميع المنتجات مراجعة ومعتمدة لضمان الجودة</p>
         </div>
       </div>
     </div>
@@ -69,10 +85,10 @@ const Store = () => {
       <div className="container mx-auto max-w-7xl">
         {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
+          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4 px-4">
             متجر <span className="text-gradient">ORION</span>
           </h1>
-          <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+          <p className="text-xl text-gray-300 max-w-3xl mx-auto px-4">
             اكتشف أفضل الأعمال والمشاريع من المستقلين والمطورين المحترفين
           </p>
         </div>
@@ -135,6 +151,14 @@ const Store = () => {
               ))}
             </select>
 
+            {/* Add Product Button for sellers */}
+            {canSell && (
+              <button className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center gap-2">
+                <Plus className="w-4 h-4" />
+                إضافة منتج
+              </button>
+            )}
+
             {/* View Mode Toggle */}
             <div className="flex items-center gap-2 ml-auto">
               <button
@@ -178,7 +202,7 @@ const Store = () => {
 
         {/* Categories Overview */}
         <div className="mt-12">
-          <h2 className="text-2xl font-bold text-white mb-8 text-center">فئات المنتجات</h2>
+          <h2 className="text-2xl font-bold text-white mb-8 text-center px-4">فئات المنتجات</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4">
             {categories.slice(1).map((category, index) => (
               <button
@@ -194,7 +218,7 @@ const Store = () => {
                   <div className="w-12 h-12 bg-purple-600/20 rounded-full flex items-center justify-center mx-auto mb-2">
                     <span className="text-2xl">{['🌐', '🎨', '💻', '📚', '📱', '🔧'][index]}</span>
                   </div>
-                  <span className="text-sm text-gray-300 font-medium">{category}</span>
+                  <span className="text-sm text-gray-300 font-medium px-2">{category}</span>
                 </div>
               </button>
             ))}

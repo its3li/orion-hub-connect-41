@@ -45,8 +45,12 @@ const Navigation = () => {
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <Link to="/" className="text-2xl font-bold text-gradient">
-            ORION
+          <Link to="/" className="flex items-center">
+            <img 
+              src="https://storage.googleapis.com/gpt-engineer-file-uploads/sGUceFcPQkgxXxuRxbjSMYN9dgs2/55a363c3-4287-4a53-b73d-1310bb9521d2?Expires=1750035827&GoogleAccessId=admin-2%40gpt-engineer-390607.iam.gserviceaccount.com&Signature=wStfHCBIE1vXCYxrFXhqnoGNfMeaZMKKsn7JcftfkevOqdUA3%2B%2BUz%2FjvpWM%2BA1xtmaYWuIju%2FWZy7gtRIJnyMu3fHDNsuWzyf%2FurifxGihBfGQMi5jWr613n6P1hF6PpcNavqJR7oQUAAWn6MOvr3SQxi%2FAZhs0uP5E2uGcXyofI%2BsMmCKuMshj7ZSh6dA7gdnF7o8OylcKp4rnFt2%2B17FZrXR5uaphbBGipdPOKjKQdMHOlZ7ErdrK%2FY2wJ%2B9pgJECaAW3%2FXg9ApXhYwfbm%2BvSOCTQLlfk%2BHzyBZDUYPAzZm5xVLSaeGekXgDjYRm%2BKt3a%2FrX%2B8S0nXMfXr9P2EAw%3D%3D"
+              alt="ORION Logo" 
+              className="h-10 w-auto mr-2"
+            />
           </Link>
 
           {/* Desktop Navigation */}
@@ -55,7 +59,7 @@ const Navigation = () => {
               <Link
                 key={item.path}
                 to={item.path}
-                className={`transition-colors hover:text-purple-300 ${
+                className={`transition-colors hover:text-purple-300 px-2 ${
                   isActive(item.path) ? 'text-purple-300' : 'text-white'
                 }`}
               >

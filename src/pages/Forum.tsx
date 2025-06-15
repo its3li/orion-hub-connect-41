@@ -39,10 +39,8 @@ const Forum = () => {
       content: postData.content,
       isAnswered: false,
       isPinned: false,
-      tags: postData.tags,
       lastReply: null,
-      images: postData.images,
-      audioFile: postData.audioFile
+      images: postData.images
     };
     
     setPosts([newPost, ...posts]);
@@ -93,7 +91,7 @@ const Forum = () => {
           <h1 className="text-4xl md:text-5xl font-bold text-gradient mb-6">
             منتدى المجتمع
           </h1>
-          <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+          <p className="text-xl text-gray-300 max-w-3xl mx-auto px-4">
             تواصل مع المجتمع، اطرح أسئلتك، وشارك خبراتك مع الآخرين
           </p>
         </div>
@@ -153,7 +151,7 @@ const Forum = () => {
                         : 'bg-white/10 text-gray-300 hover:bg-white/20'
                     }`}
                   >
-                    <span>{category.name}</span>
+                    <span className="px-2">{category.name}</span>
                     <span className="text-xs opacity-75">({category.count})</span>
                   </button>
                 ))}
@@ -163,8 +161,8 @@ const Forum = () => {
             {/* No Posts */}
             <div className="text-center py-12">
               <MessageSquare className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-white mb-2">لا توجد مواضيع حالياً</h3>
-              <p className="text-gray-300">كن أول من يبدأ النقاش وانشر موضوعاً جديداً</p>
+              <h3 className="text-xl font-semibold text-white mb-2 px-4">لا توجد مواضيع حالياً</h3>
+              <p className="text-gray-300 px-4">كن أول من يبدأ النقاش وانشر موضوعاً جديداً</p>
             </div>
           </div>
 
@@ -172,64 +170,56 @@ const Forum = () => {
           <div className="lg:w-80 space-y-6">
             {/* Forum Stats */}
             <div className="glass-effect p-6 rounded-2xl">
-              <h3 className="text-lg font-semibold text-white mb-4">إحصائيات المنتدى</h3>
+              <h3 className="text-lg font-semibold text-white mb-4 px-2">إحصائيات المنتدى</h3>
               <div className="space-y-3">
-                <div className="flex justify-between">
+                <div className="flex justify-between px-2">
                   <span className="text-gray-300">المواضيع</span>
                   <span className="text-purple-300 font-semibold">0</span>
                 </div>
-                <div className="flex justify-between">
+                <div className="flex justify-between px-2">
                   <span className="text-gray-300">الردود</span>
                   <span className="text-purple-300 font-semibold">0</span>
                 </div>
-                <div className="flex justify-between">
+                <div className="flex justify-between px-2">
                   <span className="text-gray-300">الأعضاء</span>
                   <span className="text-purple-300 font-semibold">0</span>
                 </div>
-                <div className="flex justify-between">
+                <div className="flex justify-between px-2">
                   <span className="text-gray-300">نشط اليوم</span>
                   <span className="text-green-400 font-semibold">0</span>
                 </div>
               </div>
             </div>
 
-            {/* Popular Tags */}
-            <div className="glass-effect p-6 rounded-2xl">
-              <h3 className="text-lg font-semibold text-white mb-4">الوسوم الشائعة</h3>
-              <div className="text-center text-gray-400">
-                لا توجد وسوم متاحة حالياً
-              </div>
-            </div>
-
             {/* Top Contributors */}
             <div className="glass-effect p-6 rounded-2xl">
-              <h3 className="text-lg font-semibold text-white mb-4">أبرز المساهمين</h3>
-              <div className="text-center text-gray-400">
+              <h3 className="text-lg font-semibold text-white mb-4 px-2">أبرز المساهمين</h3>
+              <div className="text-center text-gray-400 px-2">
                 لا يوجد مساهمون حالياً
               </div>
             </div>
 
             {/* Community Guidelines */}
             <div className="glass-effect p-6 rounded-2xl">
-              <h3 className="text-lg font-semibold text-white mb-4">قواعد المجتمع</h3>
+              <h3 className="text-lg font-semibold text-white mb-4 px-2">قواعد المجتمع</h3>
               <div className="space-y-3 text-sm">
-                <div className="flex items-start">
+                <div className="flex items-start px-2">
                   <span className="text-green-400 mr-2">✓</span>
                   <span className="text-gray-300">كن محترماً ومهذباً</span>
                 </div>
-                <div className="flex items-start">
+                <div className="flex items-start px-2">
                   <span className="text-green-400 mr-2">✓</span>
                   <span className="text-gray-300">ابحث قبل السؤال</span>
                 </div>
-                <div className="flex items-start">
+                <div className="flex items-start px-2">
                   <span className="text-green-400 mr-2">✓</span>
                   <span className="text-gray-300">استخدم العناوين الواضحة</span>
                 </div>
-                <div className="flex items-start">
+                <div className="flex items-start px-2">
                   <span className="text-red-400 mr-2">✗</span>
                   <span className="text-gray-300">لا تنشر محتوى مسيء</span>
                 </div>
-                <div className="flex items-start">
+                <div className="flex items-start px-2">
                   <span className="text-red-400 mr-2">✗</span>
                   <span className="text-gray-300">لا تنشر إعلانات مباشرة</span>
                 </div>

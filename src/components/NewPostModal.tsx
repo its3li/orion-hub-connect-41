@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { X, Upload, Image, Mic, Send } from 'lucide-react';
+import { X, Upload, Image, Send } from 'lucide-react';
 
 interface NewPostModalProps {
   isOpen: boolean;
@@ -13,12 +13,8 @@ const NewPostModal: React.FC<NewPostModalProps> = ({ isOpen, onClose, onSubmit }
     title: '',
     content: '',
     category: 'أسئلة عامة',
-    tags: '',
-    images: [] as File[],
-    audioFile: null as File | null
+    images: [] as File[]
   });
-
-  const [isRecording, setIsRecording] = useState(false);
 
   const categories = [
     'أسئلة عامة',
@@ -45,25 +41,12 @@ const NewPostModal: React.FC<NewPostModalProps> = ({ isOpen, onClose, onSubmit }
     }));
   };
 
-  const handleAudioRecord = () => {
-    if (isRecording) {
-      // Stop recording
-      setIsRecording(false);
-      // Here you would handle stopping the recording and saving the file
-    } else {
-      // Start recording
-      setIsRecording(true);
-      // Here you would handle starting the recording
-    }
-  };
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.title.trim() || !formData.content.trim()) return;
 
     const postData = {
       ...formData,
-      tags: formData.tags.split(',').map(tag => tag.trim()).filter(tag => tag),
       createdAt: new Date(),
       author: 'المستخدم الحالي'
     };
@@ -73,9 +56,7 @@ const NewPostModal: React.FC<NewPostModalProps> = ({ isOpen, onClose, onSubmit }
       title: '',
       content: '',
       category: 'أسئلة عامة',
-      tags: '',
-      images: [],
-      audioFile: null
+      images: []
     });
     onClose();
   };
@@ -86,7 +67,7 @@ const NewPostModal: React.FC<NewPostModalProps> = ({ isOpen, onClose, onSubmit }
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
       <div className="glass-effect p-6 rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-semibold text-white">إضافة موضوع جديد</h2>
+          <h2 className="text-2xl font-semibold text-white px-2">إضافة موضوع جديد</h2>
           <button 
             onClick={onClose}
             className="p-2 hover:bg-white/10 rounded-lg transition-colors"
@@ -97,7 +78,7 @@ const NewPostModal: React.FC<NewPostModalProps> = ({ isOpen, onClose, onSubmit }
 
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Title */}
-          <div>
+          <div className="px-2">
             <label className="block text-white font-medium mb-2">عنوان الموضوع</label>
             <input
               type="text"
@@ -110,7 +91,7 @@ const NewPostModal: React.FC<NewPostModalProps> = ({ isOpen, onClose, onSubmit }
           </div>
 
           {/* Category */}
-          <div>
+          <div className="px-2">
             <label className="block text-white font-medium mb-2">الفئة</label>
             <select
               value={formData.category}
@@ -126,7 +107,7 @@ const NewPostModal: React.FC<NewPostModalProps> = ({ isOpen, onClose, onSubmit }
           </div>
 
           {/* Content */}
-          <div>
+          <div className="px-2">
             <label className="block text-white font-medium mb-2">محتوى الموضوع</label>
             <textarea
               value={formData.content}
@@ -138,24 +119,10 @@ const NewPostModal: React.FC<NewPostModalProps> = ({ isOpen, onClose, onSubmit }
             />
           </div>
 
-          {/* Tags */}
-          <div>
-            <label className="block text-white font-medium mb-2">الوسوم (اختياري)</label>
-            <input
-              type="text"
-              value={formData.tags}
-              onChange={(e) => setFormData(prev => ({ ...prev, tags: e.target.value }))}
-              className="w-full p-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-purple-400 transition-colors"
-              placeholder="وسم1, وسم2, وسم3..."
-            />
-            <p className="text-gray-400 text-sm mt-1">افصل الوسوم بفاصلة</p>
-          </div>
-
-          {/* Media Upload */}
-          <div className="space-y-4">
-            <label className="block text-white font-medium">إضافة ملفات (اختياري)</label>
+          {/* Image Upload */}
+          <div className="space-y-4 px-2">
+            <label className="block text-white font-medium">إضافة صور (اختياري)</label>
             
-            {/* Image Upload */}
             <div className="flex items-center gap-4">
               <label className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors cursor-pointer">
                 <Image className="w-5 h-5" />
@@ -168,20 +135,6 @@ const NewPostModal: React.FC<NewPostModalProps> = ({ isOpen, onClose, onSubmit }
                   className="hidden"
                 />
               </label>
-
-              {/* Audio Record */}
-              <button
-                type="button"
-                onClick={handleAudioRecord}
-                className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
-                  isRecording 
-                    ? 'bg-red-600 hover:bg-red-700 animate-pulse' 
-                    : 'bg-green-600 hover:bg-green-700'
-                } text-white`}
-              >
-                <Mic className="w-5 h-5" />
-                <span>{isRecording ? 'إيقاف التسجيل' : 'تسجيل صوتي'}</span>
-              </button>
             </div>
 
             {/* Image Preview */}
@@ -205,20 +158,10 @@ const NewPostModal: React.FC<NewPostModalProps> = ({ isOpen, onClose, onSubmit }
                 ))}
               </div>
             )}
-
-            {/* Audio Preview */}
-            {isRecording && (
-              <div className="p-3 bg-red-600/20 border border-red-400/50 rounded-lg">
-                <div className="flex items-center gap-2 text-red-300">
-                  <div className="w-2 h-2 bg-red-400 rounded-full animate-pulse"></div>
-                  <span>جاري التسجيل...</span>
-                </div>
-              </div>
-            )}
           </div>
 
           {/* Submit Button */}
-          <div className="flex items-center justify-end gap-4 pt-6 border-t border-white/10">
+          <div className="flex items-center justify-end gap-4 pt-6 border-t border-white/10 px-2">
             <button
               type="button"
               onClick={onClose}
