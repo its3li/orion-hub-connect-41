@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { User, Mail, Phone, MapPin, Calendar, Award, BookOpen, Target, TrendingUp, Edit, Save, X, Camera, Star, Clock, Download, LogOut, Trash2 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
@@ -32,6 +33,7 @@ const Profile = () => {
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [deleteAccount, setDeleteAccount] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [isDeletingAccount, setIsDeletingAccount] = useState(false);
   const [tempData, setTempData] = useState<ProfileData>({});
   const { toast } = useToast();
   const navigate = useNavigate();
@@ -121,22 +123,54 @@ const Profile = () => {
     setIsEditing(false);
   };
 
-  const handleLogout = async () => {
+  const handleAccountDeletion = async () => {
+    if (!user) return;
+    
+    setIsDeletingAccount(true);
+    
     try {
-      if (deleteAccount) {
-        // For now, we'll just sign out. Account deletion would need additional setup
-        toast({
-          title: "تنبيه",
-          description: "حذف الحساب نهائياً غير متاح حالياً. تم تسجيل الخروج فقط.",
-          variant: "destructive",
-        });
+      // Call the database function to delete user account
+      const { error } = await supabase.rpc('delete_user_account', {
+        user_id: user.id
+      });
+
+      if (error) {
+        throw error;
       }
 
+      toast({
+        title: "تم حذف الحساب",
+        description: "تم حذف حسابك وجميع بياناتك بنجاح",
+      });
+
+      // Sign out and redirect
+      await supabase.auth.signOut();
+      navigate('/');
+    } catch (error) {
+      console.error('Error deleting account:', error);
+      toast({
+        title: "خطأ",
+        description: "حدث خطأ أثناء حذف الحساب",
+        variant: "destructive",
+      });
+    } finally {
+      setIsDeletingAccount(false);
+      setShowLogoutModal(false);
+      setDeleteAccount(false);
+    }
+  };
+
+  const handleLogout = async () => {
+    if (deleteAccount) {
+      await handleAccountDeletion();
+      return;
+    }
+
+    try {
       const { error } = await supabase.auth.signOut();
       if (error) throw error;
 
       setShowLogoutModal(false);
-      setDeleteAccount(false);
       navigate('/');
     } catch (error) {
       console.error('Error signing out:', error);
@@ -351,23 +385,25 @@ const Profile = () => {
                 />
                 <label htmlFor="deleteAccount" className="text-gray-300 flex items-center gap-2">
                   <Trash2 className="w-4 h-4 text-red-500" />
-                  حذف الحساب نهائياً
+                  حذف الحساب والبيانات نهائياً
                 </label>
               </div>
               
               <div className="flex gap-4">
                 <button
                   onClick={handleLogout}
-                  className="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+                  disabled={isDeletingAccount}
+                  className="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors disabled:opacity-50"
                 >
-                  تسجيل الخروج
+                  {isDeletingAccount ? 'جاري الحذف...' : deleteAccount ? 'حذف الحساب نهائياً' : 'تسجيل الخروج'}
                 </button>
                 <button
                   onClick={() => {
                     setShowLogoutModal(false);
                     setDeleteAccount(false);
                   }}
-                  className="flex-1 px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
+                  disabled={isDeletingAccount}
+                  className="flex-1 px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors disabled:opacity-50"
                 >
                   إلغاء
                 </button>

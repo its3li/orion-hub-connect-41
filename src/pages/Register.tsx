@@ -77,7 +77,7 @@ const Register = () => {
       }
 
       if (data.user) {
-        // Update profile with additional information
+        // Update profile with ALL the information from the form
         const { error: profileError } = await supabase
           .from('profiles')
           .update({
@@ -108,7 +108,7 @@ const Register = () => {
         } else {
           toast({
             title: "تم إنشاء الحساب بنجاح",
-            description: "يرجى التحقق من بريدك الإلكتروني لتأكيد الحساب",
+            description: "تم حفظ جميع بياناتك بنجاح. يرجى التحقق من بريدك الإلكتروني لتأكيد الحساب",
           });
         }
 
@@ -143,7 +143,7 @@ const Register = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label htmlFor="firstName" className="block text-white mb-2">
-                  الاسم الأول
+                  الاسم الأول *
                 </label>
                 <input
                   type="text"
@@ -159,7 +159,7 @@ const Register = () => {
 
               <div>
                 <label htmlFor="lastName" className="block text-white mb-2">
-                  اسم العائلة
+                  اسم العائلة *
                 </label>
                 <input
                   type="text"
@@ -176,7 +176,7 @@ const Register = () => {
 
             <div>
               <label htmlFor="email" className="block text-white mb-2">
-                البريد الإلكتروني
+                البريد الإلكتروني *
               </label>
               <input
                 type="email"
@@ -192,7 +192,7 @@ const Register = () => {
 
             <div>
               <label htmlFor="phone" className="block text-white mb-2">
-                رقم الهاتف
+                رقم الهاتف *
               </label>
               <input
                 type="tel"
@@ -209,7 +209,7 @@ const Register = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label htmlFor="password" className="block text-white mb-2">
-                  كلمة المرور
+                  كلمة المرور *
                 </label>
                 <input
                   type="password"
@@ -228,7 +228,7 @@ const Register = () => {
 
               <div>
                 <label htmlFor="confirmPassword" className="block text-white mb-2">
-                  تأكيد كلمة المرور
+                  تأكيد كلمة المرور *
                 </label>
                 <input
                   type="password"
@@ -245,7 +245,7 @@ const Register = () => {
 
             <div>
               <label htmlFor="skills" className="block text-white mb-2">
-                المهارات
+                المهارات والخبرات
               </label>
               <textarea
                 id="skills"
@@ -254,13 +254,13 @@ const Register = () => {
                 onChange={handleChange}
                 rows={3}
                 className="w-full p-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-purple-400 transition-colors resize-none"
-                placeholder="اذكر مهاراتك (مثل: برمجة، تصميم، تسويق...)"
+                placeholder="اذكر مهاراتك وخبراتك (مثل: برمجة، تصميم، تسويق، إدارة...)"
               />
             </div>
 
             <div>
               <label htmlFor="accountType" className="block text-white mb-2">
-                نوع الحساب
+                نوع الحساب *
               </label>
               <select
                 id="accountType"
@@ -275,12 +275,14 @@ const Register = () => {
                 <option value="معلم">معلم</option>
                 <option value="مستقل">مستقل</option>
                 <option value="موظف">موظف</option>
+                <option value="رائد أعمال">رائد أعمال</option>
+                <option value="باحث عن عمل">باحث عن عمل</option>
               </select>
             </div>
 
             <div>
               <label htmlFor="experience" className="block text-white mb-2">
-                مستوى الخبرة
+                مستوى الخبرة *
               </label>
               <select
                 id="experience"
@@ -291,10 +293,10 @@ const Register = () => {
                 required
               >
                 <option value="">اختر مستوى الخبرة</option>
-                <option value="مبتدئ">مبتدئ</option>
-                <option value="متوسط">متوسط</option>
-                <option value="متقدم">متقدم</option>
-                <option value="خبير">خبير</option>
+                <option value="مبتدئ">مبتدئ (0-1 سنة)</option>
+                <option value="متوسط">متوسط (2-5 سنوات)</option>
+                <option value="متقدم">متقدم (5-10 سنوات)</option>
+                <option value="خبير">خبير (أكثر من 10 سنوات)</option>
               </select>
             </div>
 

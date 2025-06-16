@@ -9,6 +9,57 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      daily_post_limits: {
+        Row: {
+          id: string
+          post_count: number
+          post_date: string
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          post_count?: number
+          post_date?: string
+          user_id: string
+        }
+        Update: {
+          id?: string
+          post_count?: number
+          post_date?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      posts: {
+        Row: {
+          category: string
+          content: string
+          created_at: string
+          id: string
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          category: string
+          content: string
+          created_at?: string
+          id?: string
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          category?: string
+          content?: string
+          created_at?: string
+          id?: string
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           account_type: string | null
@@ -74,7 +125,14 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      check_daily_post_limit: {
+        Args: { p_user_id: string }
+        Returns: boolean
+      }
+      delete_user_account: {
+        Args: { user_id: string }
+        Returns: undefined
+      }
     }
     Enums: {
       [_ in never]: never
