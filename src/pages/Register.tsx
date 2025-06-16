@@ -87,25 +87,30 @@ const Register = () => {
             skills: formData.skills,
             account_type: formData.accountType,
             experience: formData.experience,
-            bio: `مرحباً، أنا ${formData.firstName} ${formData.lastName}. ${formData.skills ? `متخصص في ${formData.skills}.` : ''} أتطلع لتطوير مهاراتي وتحقيق أهدافي المهنية من خلال منصة ORION.`,
-            location: 'القاهرة، مصر',
-            website: 'www.example.com',
-            job_title: 'مطور',
-            company: 'شركة التقنيات المتقدمة',
-            birth_date: '1 يناير 1995',
-            languages: 'العربية، الإنجليزية',
-            interests: 'البرمجة، التصميم، التعلم المستمر'
+            bio: `مرحباً، أنا ${formData.firstName} ${formData.lastName}. ${formData.skills ? `أعمل في مجال ${formData.skills}.` : ''} أتطلع لتطوير مهاراتي وتحقيق أهدافي المهنية من خلال منصة ORION.`,
+            location: '',
+            website: '',
+            job_title: '',
+            company: '',
+            birth_date: '',
+            languages: 'العربية',
+            interests: 'التعلم والتطوير'
           })
           .eq('id', data.user.id);
 
         if (profileError) {
           console.error('Profile update error:', profileError);
+          toast({
+            title: "تنبيه",
+            description: "تم إنشاء الحساب بنجاح ولكن حدث خطأ في حفظ بعض البيانات",
+            variant: "destructive",
+          });
+        } else {
+          toast({
+            title: "تم إنشاء الحساب بنجاح",
+            description: "يرجى التحقق من بريدك الإلكتروني لتأكيد الحساب",
+          });
         }
-
-        toast({
-          title: "تم إنشاء الحساب بنجاح",
-          description: "يرجى التحقق من بريدك الإلكتروني لتأكيد الحساب",
-        });
 
         // Redirect to profile page
         navigate('/profile');

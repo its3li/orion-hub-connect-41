@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { User, Mail, Phone, MapPin, Calendar, Award, BookOpen, Target, TrendingUp, Edit, Save, X, Camera, Star, Clock, Download, LogOut, Trash2 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
@@ -79,8 +78,10 @@ const Profile = () => {
         return;
       }
 
-      setProfileData(data);
-      setTempData(data || {});
+      if (data) {
+        setProfileData(data);
+        setTempData(data);
+      }
     } catch (error) {
       console.error('Error:', error);
     }
@@ -148,13 +149,13 @@ const Profile = () => {
   };
 
   const getFullName = () => {
-    if (!profileData?.first_name) return user?.email || 'مستخدم جديد';
-    return `${profileData.first_name} ${profileData.last_name || ''}`.trim();
+    if (!profileData?.first_name && !profileData?.last_name) return user?.email || 'مستخدم جديد';
+    return `${profileData.first_name || ''} ${profileData.last_name || ''}`.trim();
   };
 
   const getInitials = () => {
     if (!profileData?.first_name) return user?.email?.[0]?.toUpperCase() || 'U';
-    return profileData.first_name[0] + (profileData.last_name ? profileData.last_name[0] : '');
+    return (profileData.first_name[0] || '') + (profileData.last_name?.[0] || '');
   };
 
   // Empty states for stats
@@ -430,6 +431,16 @@ const Profile = () => {
                           onChange={(e) => setTempData(prev => ({ ...prev, location: e.target.value }))}
                           className="flex-1 bg-white/10 border border-white/20 rounded-lg px-3 py-2 text-white placeholder-gray-300 focus:outline-none focus:border-purple-400"
                           placeholder="الموقع"
+                        />
+                      </div>
+                      <div className="flex items-start">
+                        <Target className="w-5 h-5 text-purple-300 mr-3 mt-2" />
+                        <textarea
+                          value={tempData.skills || ''}
+                          onChange={(e) => setTempData(prev => ({ ...prev, skills: e.target.value }))}
+                          className="flex-1 bg-white/10 border border-white/20 rounded-lg px-3 py-2 text-white placeholder-gray-300 focus:outline-none focus:border-purple-400 resize-none"
+                          rows={2}
+                          placeholder="المهارات"
                         />
                       </div>
                     </>
