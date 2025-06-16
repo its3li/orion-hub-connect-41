@@ -2,10 +2,11 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, User } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [user, setUser] = useState(null);
   const location = useLocation();
 
   const navItems = [
@@ -20,25 +21,22 @@ const Navigation = () => {
 
   const isActive = (path: string) => location.pathname === path;
 
-  // Check login status on component mount and location change
+  // Check auth state
   useEffect(() => {
-    const checkLoginStatus = () => {
-      const loginStatus = localStorage.getItem('isLoggedIn');
-      setIsLoggedIn(loginStatus === 'true');
+    const getUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      setUser(user);
     };
-    
-    checkLoginStatus();
-    
-    // Listen for storage changes (when user logs in/out in another tab)
-    const handleStorageChange = (e: StorageEvent) => {
-      if (e.key === 'isLoggedIn') {
-        checkLoginStatus();
-      }
-    };
-    
-    window.addEventListener('storage', handleStorageChange);
-    return () => window.removeEventListener('storage', handleStorageChange);
-  }, [location]);
+
+    getUser();
+
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      setUser(session?.user ?? null);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   return (
     <nav className="glass-effect fixed w-full top-0 z-50 border-b border-white/20">
@@ -70,7 +68,7 @@ const Navigation = () => {
 
           {/* User Menu */}
           <div className="hidden md:flex items-center space-x-4">
-            {!isLoggedIn ? (
+            {!user ? (
               <>
                 <Link
                   to="/login"
@@ -120,7 +118,7 @@ const Navigation = () => {
               </Link>
             ))}
             <div className="mt-4 pt-4 border-t border-white/20 space-y-2">
-              {!isLoggedIn ? (
+              {!user ? (
                 <>
                   <Link
                     to="/login"

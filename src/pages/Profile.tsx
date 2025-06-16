@@ -1,122 +1,143 @@
+
 import React, { useState, useEffect } from 'react';
 import { User, Mail, Phone, MapPin, Calendar, Award, BookOpen, Target, TrendingUp, Edit, Save, X, Camera, Star, Clock, Download, LogOut, Trash2 } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
+import { useNavigate } from 'react-router-dom';
 
 const Profile = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userData, setUserData] = useState(null);
+  const [user, setUser] = useState(null);
+  const [profileData, setProfileData] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [activeTab, setActiveTab] = useState('overview');
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [deleteAccount, setDeleteAccount] = useState(false);
-  const [profileData, setProfileData] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    phone: '',
-    skills: '',
-    accountType: '',
-    experience: '',
-    bio: '',
-    location: '',
-    website: '',
-    jobTitle: '',
-    company: '',
-    joinDate: '',
-    birthDate: '',
-    languages: '',
-    interests: ''
-  });
-
-  const [tempData, setTempData] = useState(profileData);
+  const [isLoading, setIsLoading] = useState(true);
+  const [tempData, setTempData] = useState({});
+  const { toast } = useToast();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const loginStatus = localStorage.getItem('isLoggedIn');
-    const storedUserData = localStorage.getItem('userData');
-    
-    if (loginStatus === 'true' && storedUserData) {
-      const user = JSON.parse(storedUserData);
-      setIsLoggedIn(true);
-      setUserData(user);
-      setProfileData({
-        firstName: user.firstName || '',
-        lastName: user.lastName || '',
-        email: user.email || '',
-        phone: user.phone || '',
-        skills: user.skills || '',
-        accountType: user.accountType || '',
-        experience: user.experience || '',
-        bio: user.bio || '',
-        location: user.location || '',
-        website: user.website || '',
-        jobTitle: user.jobTitle || '',
-        company: user.company || '',
-        joinDate: user.joinDate || '',
-        birthDate: user.birthDate || '',
-        languages: user.languages || '',
-        interests: user.interests || ''
+    // Check auth state
+    const getUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        setUser(user);
+        fetchProfile(user.id);
+      } else {
+        navigate('/login');
+      }
+      setIsLoading(false);
+    };
+
+    getUser();
+
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (session?.user) {
+        setUser(session.user);
+        fetchProfile(session.user.id);
+      } else {
+        setUser(null);
+        navigate('/login');
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, [navigate]);
+
+  const fetchProfile = async (userId) => {
+    try {
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', userId)
+        .single();
+
+      if (error) {
+        console.error('Error fetching profile:', error);
+        return;
+      }
+
+      setProfileData(data);
+      setTempData(data || {});
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
+  const handleSave = async () => {
+    if (!user) return;
+
+    try {
+      const { error } = await supabase
+        .from('profiles')
+        .update(tempData)
+        .eq('id', user.id);
+
+      if (error) {
+        throw error;
+      }
+
+      setProfileData(tempData);
+      setIsEditing(false);
+      toast({
+        title: "تم حفظ التغييرات",
+        description: "تم تحديث ملفك الشخصي بنجاح",
       });
-      setTempData({
-        firstName: user.firstName || '',
-        lastName: user.lastName || '',
-        email: user.email || '',
-        phone: user.phone || '',
-        skills: user.skills || '',
-        accountType: user.accountType || '',
-        experience: user.experience || '',
-        bio: user.bio || '',
-        location: user.location || '',
-        website: user.website || '',
-        jobTitle: user.jobTitle || '',
-        company: user.company || '',
-        joinDate: user.joinDate || '',
-        birthDate: user.birthDate || '',
-        languages: user.languages || '',
-        interests: user.interests || ''
+    } catch (error) {
+      console.error('Error updating profile:', error);
+      toast({
+        title: "خطأ",
+        description: "حدث خطأ أثناء حفظ التغييرات",
+        variant: "destructive",
       });
     }
-  }, []);
-
-  const handleSave = () => {
-    setProfileData(tempData);
-    // Update localStorage
-    const updatedUserData = { ...userData, ...tempData };
-    localStorage.setItem('userData', JSON.stringify(updatedUserData));
-    setUserData(updatedUserData);
-    setIsEditing(false);
   };
 
   const handleCancel = () => {
-    setTempData(profileData);
+    setTempData(profileData || {});
     setIsEditing(false);
   };
 
-  const handleLogout = () => {
-    if (deleteAccount) {
-      // Delete account completely
-      localStorage.removeItem('userData');
-      localStorage.removeItem('isLoggedIn');
-    } else {
-      // Just logout, keep data
-      localStorage.setItem('isLoggedIn', 'false');
+  const handleLogout = async () => {
+    try {
+      if (deleteAccount) {
+        // For now, we'll just sign out. Account deletion would need additional setup
+        toast({
+          title: "تنبيه",
+          description: "حذف الحساب نهائياً غير متاح حالياً. تم تسجيل الخروج فقط.",
+          variant: "destructive",
+        });
+      }
+
+      const { error } = await supabase.auth.signOut();
+      if (error) throw error;
+
+      setShowLogoutModal(false);
+      setDeleteAccount(false);
+      navigate('/');
+    } catch (error) {
+      console.error('Error signing out:', error);
+      toast({
+        title: "خطأ",
+        description: "حدث خطأ أثناء تسجيل الخروج",
+        variant: "destructive",
+      });
     }
-    setIsLoggedIn(false);
-    setUserData(null);
-    setShowLogoutModal(false);
-    setDeleteAccount(false);
-    window.location.href = '/';
   };
 
   const getFullName = () => {
-    if (!isLoggedIn || !profileData.firstName) return '';
-    return `${profileData.firstName} ${profileData.lastName}`.trim();
+    if (!profileData?.first_name) return user?.email || 'مستخدم جديد';
+    return `${profileData.first_name} ${profileData.last_name || ''}`.trim();
   };
 
   const getInitials = () => {
-    if (!isLoggedIn || !profileData.firstName) return 'U';
-    return profileData.firstName[0] + (profileData.lastName ? profileData.lastName[0] : '');
+    if (!profileData?.first_name) return user?.email?.[0]?.toUpperCase() || 'U';
+    return profileData.first_name[0] + (profileData.last_name ? profileData.last_name[0] : '');
   };
 
-  // Empty states for non-logged in users
+  // Empty states for stats
   const learningStats = {
     totalHours: 0,
     coursesCompleted: 0,
@@ -126,10 +147,6 @@ const Profile = () => {
     averageGrade: ''
   };
 
-  const enrolledCourses = [];
-  const achievements = [];
-  const certificates = [];
-
   const tabs = [
     { id: 'overview', label: 'نظرة عامة', icon: <User className="w-5 h-5" /> },
     { id: 'courses', label: 'كورساتي', icon: <BookOpen className="w-5 h-5" /> },
@@ -137,7 +154,15 @@ const Profile = () => {
     { id: 'certificates', label: 'الشهادات', icon: <Star className="w-5 h-5" /> }
   ];
 
-  if (!isLoggedIn) {
+  if (isLoading) {
+    return (
+      <div className="min-h-screen pt-24 px-4 pb-12 flex items-center justify-center">
+        <div className="text-white text-xl">جاري التحميل...</div>
+      </div>
+    );
+  }
+
+  if (!user) {
     return (
       <div className="min-h-screen pt-24 px-4 pb-12">
         <div className="container mx-auto max-w-6xl">
@@ -192,21 +217,21 @@ const Profile = () => {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <input
                       type="text"
-                      value={tempData.firstName}
-                      onChange={(e) => setTempData(prev => ({ ...prev, firstName: e.target.value }))}
+                      value={tempData.first_name || ''}
+                      onChange={(e) => setTempData(prev => ({ ...prev, first_name: e.target.value }))}
                       className="text-xl font-bold bg-white/10 border-b-2 border-purple-400 text-white focus:outline-none focus:border-purple-300 px-2 py-1 rounded"
                       placeholder="الاسم الأول"
                     />
                     <input
                       type="text"
-                      value={tempData.lastName}
-                      onChange={(e) => setTempData(prev => ({ ...prev, lastName: e.target.value }))}
+                      value={tempData.last_name || ''}
+                      onChange={(e) => setTempData(prev => ({ ...prev, last_name: e.target.value }))}
                       className="text-xl font-bold bg-white/10 border-b-2 border-purple-400 text-white focus:outline-none focus:border-purple-300 px-2 py-1 rounded"
                       placeholder="اسم العائلة"
                     />
                   </div>
                   <textarea
-                    value={tempData.bio}
+                    value={tempData.bio || ''}
                     onChange={(e) => setTempData(prev => ({ ...prev, bio: e.target.value }))}
                     className="w-full p-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-300 resize-none focus:outline-none focus:border-purple-400"
                     rows={3}
@@ -215,12 +240,12 @@ const Profile = () => {
                 </div>
               ) : (
                 <div>
-                  <h1 className="text-3xl font-bold text-white mb-2">{getFullName() || 'مستخدم جديد'}</h1>
-                  <p className="text-gray-300 mb-4">{profileData.bio || 'لم يتم إضافة نبذة شخصية بعد'}</p>
-                  {profileData.accountType && (
-                    <p className="text-purple-300 mb-2">نوع الحساب: {profileData.accountType}</p>
+                  <h1 className="text-3xl font-bold text-white mb-2">{getFullName()}</h1>
+                  <p className="text-gray-300 mb-4">{profileData?.bio || 'لم يتم إضافة نبذة شخصية بعد'}</p>
+                  {profileData?.account_type && (
+                    <p className="text-purple-300 mb-2">نوع الحساب: {profileData.account_type}</p>
                   )}
-                  {profileData.experience && (
+                  {profileData?.experience && (
                     <p className="text-purple-300 mb-4">مستوى الخبرة: {profileData.experience}</p>
                   )}
                 </div>
@@ -365,19 +390,13 @@ const Profile = () => {
                     <>
                       <div className="flex items-center">
                         <Mail className="w-5 h-5 text-purple-300 mr-3" />
-                        <input
-                          type="email"
-                          value={tempData.email}
-                          onChange={(e) => setTempData(prev => ({ ...prev, email: e.target.value }))}
-                          className="flex-1 bg-white/10 border border-white/20 rounded-lg px-3 py-2 text-white placeholder-gray-300 focus:outline-none focus:border-purple-400"
-                          placeholder="البريد الإلكتروني"
-                        />
+                        <span className="text-gray-300">{user.email}</span>
                       </div>
                       <div className="flex items-center">
                         <Phone className="w-5 h-5 text-purple-300 mr-3" />
                         <input
                           type="tel"
-                          value={tempData.phone}
+                          value={tempData.phone || ''}
                           onChange={(e) => setTempData(prev => ({ ...prev, phone: e.target.value }))}
                           className="flex-1 bg-white/10 border border-white/20 rounded-lg px-3 py-2 text-white placeholder-gray-300 focus:outline-none focus:border-purple-400"
                           placeholder="رقم الهاتف"
@@ -387,7 +406,7 @@ const Profile = () => {
                         <MapPin className="w-5 h-5 text-purple-300 mr-3" />
                         <input
                           type="text"
-                          value={tempData.location}
+                          value={tempData.location || ''}
                           onChange={(e) => setTempData(prev => ({ ...prev, location: e.target.value }))}
                           className="flex-1 bg-white/10 border border-white/20 rounded-lg px-3 py-2 text-white placeholder-gray-300 focus:outline-none focus:border-purple-400"
                           placeholder="الموقع"
@@ -398,17 +417,17 @@ const Profile = () => {
                     <>
                       <div className="flex items-center text-gray-300">
                         <Mail className="w-5 h-5 text-purple-300 mr-3" />
-                        <span>{profileData.email || 'لم يتم إضافة بريد إلكتروني'}</span>
+                        <span>{user.email}</span>
                       </div>
                       <div className="flex items-center text-gray-300">
                         <Phone className="w-5 h-5 text-purple-300 mr-3" />
-                        <span>{profileData.phone || 'لم يتم إضافة رقم هاتف'}</span>
+                        <span>{profileData?.phone || 'لم يتم إضافة رقم هاتف'}</span>
                       </div>
                       <div className="flex items-center text-gray-300">
                         <MapPin className="w-5 h-5 text-purple-300 mr-3" />
-                        <span>{profileData.location || 'لم يتم تحديد الموقع'}</span>
+                        <span>{profileData?.location || 'لم يتم تحديد الموقع'}</span>
                       </div>
-                      {profileData.skills && (
+                      {profileData?.skills && (
                         <div className="flex items-start text-gray-300">
                           <Target className="w-5 h-5 text-purple-300 mr-3 mt-1" />
                           <div>

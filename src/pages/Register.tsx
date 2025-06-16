@@ -2,6 +2,8 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { User } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -16,7 +18,9 @@ const Register = () => {
     experience: ''
   });
   const [passwordError, setPasswordError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const { toast } = useToast();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -35,7 +39,7 @@ const Register = () => {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (formData.password.length < 8) {
@@ -44,30 +48,78 @@ const Register = () => {
     }
     
     if (formData.password !== formData.confirmPassword) {
-      alert('كلمات المرور غير متطابقة');
+      toast({
+        title: "خطأ",
+        description: "كلمات المرور غير متطابقة",
+        variant: "destructive",
+      });
       return;
     }
-    
-    // Store user data in localStorage
-    const userData = {
-      ...formData,
-      bio: `مرحباً، أنا ${formData.firstName} ${formData.lastName}. ${formData.skills ? `متخصص في ${formData.skills}.` : ''} أتطلع لتطوير مهاراتي وتحقيق أهدافي المهنية من خلال منصة ORION.`,
-      location: 'القاهرة، مصر',
-      website: 'www.example.com',
-      jobTitle: 'مطور',
-      company: 'شركة التقنيات المتقدمة',
-      joinDate: new Date().toLocaleDateString('ar-EG', { year: 'numeric', month: 'long' }),
-      birthDate: '1 يناير 1995',
-      languages: 'العربية، الإنجليزية',
-      interests: 'البرمجة، التصميم، التعلم المستمر'
-    };
-    
-    localStorage.setItem('userData', JSON.stringify(userData));
-    localStorage.setItem('isLoggedIn', 'true');
-    
-    console.log('Registration data:', formData);
-    // Redirect to profile page
-    navigate('/profile');
+
+    setIsLoading(true);
+
+    try {
+      // Sign up the user
+      const { data, error } = await supabase.auth.signUp({
+        email: formData.email,
+        password: formData.password,
+        options: {
+          emailRedirectTo: `${window.location.origin}/`,
+          data: {
+            first_name: formData.firstName,
+            last_name: formData.lastName,
+          }
+        }
+      });
+
+      if (error) {
+        throw error;
+      }
+
+      if (data.user) {
+        // Update profile with additional information
+        const { error: profileError } = await supabase
+          .from('profiles')
+          .update({
+            first_name: formData.firstName,
+            last_name: formData.lastName,
+            phone: formData.phone,
+            skills: formData.skills,
+            account_type: formData.accountType,
+            experience: formData.experience,
+            bio: `مرحباً، أنا ${formData.firstName} ${formData.lastName}. ${formData.skills ? `متخصص في ${formData.skills}.` : ''} أتطلع لتطوير مهاراتي وتحقيق أهدافي المهنية من خلال منصة ORION.`,
+            location: 'القاهرة، مصر',
+            website: 'www.example.com',
+            job_title: 'مطور',
+            company: 'شركة التقنيات المتقدمة',
+            birth_date: '1 يناير 1995',
+            languages: 'العربية، الإنجليزية',
+            interests: 'البرمجة، التصميم، التعلم المستمر'
+          })
+          .eq('id', data.user.id);
+
+        if (profileError) {
+          console.error('Profile update error:', profileError);
+        }
+
+        toast({
+          title: "تم إنشاء الحساب بنجاح",
+          description: "يرجى التحقق من بريدك الإلكتروني لتأكيد الحساب",
+        });
+
+        // Redirect to profile page
+        navigate('/profile');
+      }
+    } catch (error: any) {
+      console.error('Registration error:', error);
+      toast({
+        title: "خطأ في التسجيل",
+        description: error.message || "حدث خطأ أثناء إنشاء الحساب",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -243,9 +295,10 @@ const Register = () => {
 
             <button
               type="submit"
-              className="w-full py-3 bg-purple-600 text-white rounded-lg font-semibold hover:bg-purple-700 transition-colors hover-glow"
+              disabled={isLoading}
+              className="w-full py-3 bg-purple-600 text-white rounded-lg font-semibold hover:bg-purple-700 transition-colors hover-glow disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              إنشاء الحساب
+              {isLoading ? 'جاري إنشاء الحساب...' : 'إنشاء الحساب'}
             </button>
           </form>
 

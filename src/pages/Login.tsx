@@ -1,14 +1,18 @@
 
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { User, LogIn } from 'lucide-react';
+import { LogIn } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
 
 const Login = () => {
   const [formData, setFormData] = useState({
     email: '',
     password: ''
   });
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const { toast } = useToast();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
@@ -17,43 +21,47 @@ const Login = () => {
     });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Simulate login - in real app, this would be API call
-    console.log('Login attempt:', formData);
-    
-    // Set login status
-    localStorage.setItem('isLoggedIn', 'true');
-    
-    // Check if user has registration data, if not create basic profile
-    const existingUserData = localStorage.getItem('userData');
-    if (!existingUserData) {
-      const basicUserData = {
-        firstName: '',
-        lastName: '',
+    setIsLoading(true);
+
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({
         email: formData.email,
-        phone: '',
-        skills: '',
-        accountType: '',
-        experience: '',
-        bio: '',
-        location: '',
-        website: '',
-        jobTitle: '',
-        company: '',
-        joinDate: new Date().toLocaleDateString('ar-EG', { year: 'numeric', month: 'long' }),
-        birthDate: '',
-        languages: '',
-        interests: ''
-      };
-      localStorage.setItem('userData', JSON.stringify(basicUserData));
+        password: formData.password,
+      });
+
+      if (error) {
+        throw error;
+      }
+
+      if (data.user) {
+        toast({
+          title: "تم تسجيل الدخول بنجاح",
+          description: "مرحباً بك في ORION",
+        });
+
+        // Redirect to profile page
+        navigate('/profile');
+      }
+    } catch (error: any) {
+      console.error('Login error:', error);
+      let errorMessage = "حدث خطأ أثناء تسجيل الدخول";
+      
+      if (error.message.includes('Invalid login credentials')) {
+        errorMessage = "بيانات الدخول غير صحيحة";
+      } else if (error.message.includes('Email not confirmed')) {
+        errorMessage = "يرجى تأكيد بريدك الإلكتروني أولاً";
+      }
+
+      toast({
+        title: "خطأ في تسجيل الدخول",
+        description: errorMessage,
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
     }
-    
-    // Trigger a storage event to update other components
-    window.dispatchEvent(new Event('storage'));
-    
-    // Redirect to profile page
-    navigate('/profile');
   };
 
   return (
@@ -113,9 +121,10 @@ const Login = () => {
 
             <button
               type="submit"
-              className="w-full py-3 bg-purple-600 text-white rounded-lg font-semibold hover:bg-purple-700 transition-colors hover-glow"
+              disabled={isLoading}
+              className="w-full py-3 bg-purple-600 text-white rounded-lg font-semibold hover:bg-purple-700 transition-colors hover-glow disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              تسجيل الدخول
+              {isLoading ? 'جاري تسجيل الدخول...' : 'تسجيل الدخول'}
             </button>
           </form>
 
