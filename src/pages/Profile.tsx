@@ -5,15 +5,35 @@ import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useNavigate } from 'react-router-dom';
 
+interface ProfileData {
+  id?: string;
+  first_name?: string;
+  last_name?: string;
+  phone?: string;
+  skills?: string;
+  account_type?: string;
+  experience?: string;
+  bio?: string;
+  location?: string;
+  website?: string;
+  job_title?: string;
+  company?: string;
+  birth_date?: string;
+  languages?: string;
+  interests?: string;
+  created_at?: string;
+  updated_at?: string;
+}
+
 const Profile = () => {
-  const [user, setUser] = useState(null);
-  const [profileData, setProfileData] = useState(null);
+  const [user, setUser] = useState<any>(null);
+  const [profileData, setProfileData] = useState<ProfileData | null>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [activeTab, setActiveTab] = useState('overview');
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [deleteAccount, setDeleteAccount] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [tempData, setTempData] = useState({});
+  const [tempData, setTempData] = useState<ProfileData>({});
   const { toast } = useToast();
   const navigate = useNavigate();
 
@@ -46,7 +66,7 @@ const Profile = () => {
     return () => subscription.unsubscribe();
   }, [navigate]);
 
-  const fetchProfile = async (userId) => {
+  const fetchProfile = async (userId: string) => {
     try {
       const { data, error } = await supabase
         .from('profiles')
